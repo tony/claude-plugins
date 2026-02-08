@@ -57,6 +57,17 @@ At minimum, Claude (this agent) is always available. For multi-model functionali
 | `codex` | GPT | [Codex CLI](https://github.com/openai/codex) |
 | `agent` | Any (fallback) | [Agent CLI](https://cursor.com/cli) |
 
+### macOS timeout support
+
+External CLI commands are wrapped with `timeout` (GNU coreutils) to enforce time
+limits. On macOS, install GNU coreutils to get `gtimeout`:
+
+```console
+brew install coreutils
+```
+
+If neither `timeout` nor `gtimeout` is found, commands run without a time limit.
+
 If no external CLIs are available, commands fall back to Claude-only mode with a note about the limitation.
 
 ## Language-Agnostic Design
