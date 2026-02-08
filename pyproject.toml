@@ -1,0 +1,38 @@
+[project]
+name = "claude-plugins"
+version = "0.0.0"
+requires-python = ">=3.12"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14",
+    "basedpyright>=1.37",
+    "pytest>=9.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",   # conflicts with ruff formatter
+    "T201",     # allow print() in CLI scripts
+    "S311",     # allow random for non-crypto
+    "FBT001",   # allow boolean positional args
+    "FBT002",   # allow boolean defaults
+    "SIM108",   # allow ternary when readable
+    "C901",     # allow complex main() in CLI scripts
+    "PLR0912",  # allow many branches in main()
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.basedpyright]
+typeCheckingMode = "all"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+testpaths = ["scripts"]
