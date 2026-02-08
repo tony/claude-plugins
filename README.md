@@ -12,6 +12,7 @@ providing language-agnostic AI / agentic workflow plugins for DX efficiency.
 
 | Plugin | Category | Description |
 |--------|----------|-------------|
+| [commit](plugins/commit/) | Development | Create git commits following project conventions with format enforcement and safety checks |
 | [multi-model](plugins/multi-model/) | Development | Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, review, and synthesize |
 | [rebase](plugins/rebase/) | Development | Automated rebase onto trunk with conflict prediction, resolution, and quality gate verification |
 | [changelog](plugins/changelog/) | Productivity | Generate categorized changelog entries from branch commits and PR context |
@@ -28,6 +29,10 @@ Add the marketplace:
 You can also browse available plugins with `/plugin > Discover`.
 
 Then install any plugin:
+
+```console
+/plugin install commit@ai-workflow-plugins
+```
 
 ```console
 /plugin install multi-model@ai-workflow-plugins
