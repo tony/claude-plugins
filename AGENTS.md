@@ -140,17 +140,45 @@ Each component type has specific frontmatter requirements:
 - `allowed-tools` (optional) — tool access list (bare names, e.g. `Bash`)
 - `argument-hint` (optional) — placeholder text for command argument
 - `model` (optional) — model override for this command
+- `disable-model-invocation` (optional) — if true, command runs without model invocation
 
 **Agents** (`agents/*.md`):
-- `name` (required) — display name for the agent
-- `description` (required) — must include `<example>` blocks showing when to trigger
-- `tools` (optional) — tool access list
-- `model` (optional) — model override for this agent
+- `name` (required) — agent identifier (lowercase letters and hyphens)
+- `description` (required) — when to delegate to this agent; include `<example>` blocks
+- `tools` (optional) — comma-separated tool access list
+- `disallowedTools` (optional) — comma-separated tools to deny
+- `model` (optional) — `sonnet`, `opus`, `haiku`, or `inherit`
+- `permissionMode` (optional) — `default`, `acceptEdits`, `delegate`, `dontAsk`, `bypassPermissions`, `plan`
+- `maxTurns` (optional) — max agentic turns before agent stops
+- `skills` (optional) — skill names to preload into agent context
+- `mcpServers` (optional) — MCP servers available to this agent
+- `hooks` (optional) — lifecycle hooks scoped to this agent
+- `memory` (optional) — persistent memory scope: `user`, `project`, `local`
+- `color` (optional) — visual indicator: `yellow`, `green`, `red`, `cyan`, `pink`
 
 **Skills** (`skills/*/SKILL.md`):
 - `name` (required) — skill display name
 - `description` (required) — describes when and how to invoke the skill
 - `version` (optional) — skill version
+- `tools` (optional) — comma-separated tool access list
+- `disallowedTools` (optional) — comma-separated tools to deny
+- `context` (optional) — agent context mode
+- `disable-model-invocation` (optional) — if true, runs without model invocation
+
+**Hooks** (`hooks/hooks.json`):
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "..." }] }
+    ]
+  }
+}
+```
+- Events: `PreToolUse`, `PostToolUse`, `Stop`, `SubagentStop`, `UserPromptSubmit`,
+  `SessionStart`, `SessionEnd`, `PreCompact`, `Notification`
+- Hook types: `command` (shell script), `prompt` (LLM evaluation), `agent` (agentic verifier)
+- Use `${CLAUDE_PLUGIN_ROOT}` for portable paths in command hooks
 
 ### Marketplace Manifest
 
