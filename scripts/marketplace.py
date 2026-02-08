@@ -167,6 +167,18 @@ class PluginEntry(pydantic.BaseModel):
     strict: bool | None = None
 
 
+class MarketplaceMetadata(pydantic.BaseModel):
+    """Marketplace metadata block (required by ``claude plugin validate``).
+
+    Examples
+    --------
+    >>> MarketplaceMetadata(description="Test marketplace")
+    MarketplaceMetadata(description='Test marketplace')
+    """
+
+    description: str
+
+
 class MarketplaceManifest(pydantic.BaseModel):
     """Top-level marketplace manifest schema.
 
@@ -175,6 +187,7 @@ class MarketplaceManifest(pydantic.BaseModel):
     >>> manifest = MarketplaceManifest(
     ...     name="test-marketplace",
     ...     description="Test",
+    ...     metadata=MarketplaceMetadata(description="Test"),
     ...     owner=Author(name="Test"),
     ...     plugins=[],
     ... )
@@ -184,6 +197,7 @@ class MarketplaceManifest(pydantic.BaseModel):
 
     name: str
     description: str
+    metadata: MarketplaceMetadata
     owner: Author
     plugins: list[PluginEntry]
 
