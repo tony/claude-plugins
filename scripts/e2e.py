@@ -40,6 +40,7 @@ from pathlib import Path
 
 import rich.console
 import typer
+from _private_path import PrivatePath  # pyright: ignore[reportImplicitRelativeImport]
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MARKETPLACE_NAME = "ai-workflow-plugins"
@@ -284,7 +285,7 @@ def _run_suite(source_type: t.Literal["local", "github"]) -> tuple[int, int]:
     """
     if source_type == "local":
         source = str(REPO_ROOT)
-        label = f"local ({REPO_ROOT})"
+        label = f"local ({PrivatePath(REPO_ROOT)})"
     else:
         source = GITHUB_SOURCE
         label = f"github ({GITHUB_SOURCE})"

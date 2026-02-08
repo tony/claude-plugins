@@ -41,6 +41,7 @@ import rich.console
 import rich.table
 import typer
 import yaml
+from _private_path import PrivatePath  # pyright: ignore[reportImplicitRelativeImport]
 
 RESERVED_MARKETPLACE_NAMES = frozenset(
     {
@@ -238,7 +239,7 @@ def load_marketplace() -> MarketplaceManifest:
         If the manifest file is missing or invalid.
     """
     if not MARKETPLACE_PATH.exists():
-        console.print(f"[red]Error:[/red] {MARKETPLACE_PATH} not found")
+        console.print(f"[red]Error:[/red] {PrivatePath(MARKETPLACE_PATH)} not found")
         raise SystemExit(1)
     raw = t.cast("dict[str, t.Any]", json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8")))
     return MarketplaceManifest.model_validate(raw)
@@ -847,7 +848,7 @@ def sync(*, write: bool = False, check: bool = False) -> None:
     raw_out["$schema"] = "https://anthropic.com/claude-code/marketplace.schema.json"
     output = json.dumps(raw_out, indent=2) + "\n"
     _ = MARKETPLACE_PATH.write_text(output, encoding="utf-8")
-    console.print(f"\n[green]Updated {MARKETPLACE_PATH}[/green]")
+    console.print(f"\n[green]Updated {PrivatePath(MARKETPLACE_PATH)}[/green]")
 
 
 @app.command(name="check-outdated")
