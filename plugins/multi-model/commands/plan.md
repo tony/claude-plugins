@@ -234,7 +234,7 @@ For each plan's claims about the codebase:
 - Always resolve conflicts by checking what the code actually does
 - The final plan must follow project conventions from CLAUDE.md/AGENTS.md
 - If only Claude is available, still produce a thorough plan and note the limitation
-- Use `timeout 600` for external CLI commands — adjust higher or lower based on observed completion times
+- Use `timeout 600` for external CLI commands (`gtimeout` on macOS). If neither is available, omit the timeout prefix — time limits will not be enforced. Adjust higher or lower based on observed completion times.
 - Capture stderr from external tools to report failures clearly
 - The output should be a concrete, actionable plan — not vague suggestions
 - If an external model times out persistently, ask the user whether to retry with a higher timeout. Warn that retrying spawns external AI agents that may consume tokens billed to other provider accounts (Gemini, OpenAI, Cursor, etc.).

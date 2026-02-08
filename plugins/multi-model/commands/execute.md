@@ -314,7 +314,7 @@ The changes are now in the working tree, unstaged. The user can review and commi
 - Always clean up worktrees and branches after synthesis
 - The synthesis must pass all quality gates before being considered complete
 - If only Claude is available, skip worktree creation and just implement directly
-- Use `timeout 1200` for external CLI commands — adjust higher or lower based on observed completion times
+- Use `timeout 1200` for external CLI commands (`gtimeout` on macOS). If neither is available, omit the timeout prefix — time limits will not be enforced. Adjust higher or lower based on observed completion times.
 - If a model fails, clearly report why and continue with remaining models
 - Branch names use `mm/<model>/<YYYYMMDD-HHMMSS>` format
 - Never commit the synthesized result — leave it unstaged for user review

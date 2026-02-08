@@ -259,7 +259,7 @@ git branch -D mm/gpt/<timestamp> 2>/dev/null
 - Always present the comparison to the user and let them choose (or accept recommendation)
 - Always clean up worktrees and branches after adoption
 - If only Claude is available, skip worktree creation and just implement directly
-- Use `timeout 600` for external CLI commands — adjust higher or lower based on observed completion times
+- Use `timeout 600` for external CLI commands (`gtimeout` on macOS). If neither is available, omit the timeout prefix — time limits will not be enforced. Adjust higher or lower based on observed completion times.
 - If a model fails, clearly report why and continue with remaining models
 - Branch names use `mm/<model>/<YYYYMMDD-HHMMSS>` format
 - If an external model times out persistently, ask the user whether to retry with a higher timeout. Warn that retrying spawns external AI agents that may consume tokens billed to other provider accounts (Gemini, OpenAI, Cursor, etc.).

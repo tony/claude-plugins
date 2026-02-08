@@ -257,6 +257,6 @@ After presenting the report:
 - Always clearly attribute which reviewer(s) found each issue
 - Consensus issues take priority over single-reviewer issues
 - If no external reviewers are available, fall back to Claude-only review and note the limitation
-- Use `timeout 900` for external CLI commands — adjust higher or lower based on observed completion times
+- Use `timeout 900` for external CLI commands (`gtimeout` on macOS). If neither is available, omit the timeout prefix — time limits will not be enforced. Adjust higher or lower based on observed completion times.
 - Capture stderr from external tools to report failures clearly
 - If an external model times out persistently, ask the user whether to retry with a higher timeout. Warn that retrying spawns external AI agents that may consume tokens billed to other provider accounts (Gemini, OpenAI, Cursor, etc.).

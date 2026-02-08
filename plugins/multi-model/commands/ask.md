@@ -184,6 +184,6 @@ Combine the best elements from all responses:
 - Always cite specific files and line numbers when possible
 - If models contradict each other, check the code and state which is correct
 - If only Claude is available, still provide a thorough answer and note the limitation
-- Use `timeout 450` for external CLI commands — adjust higher or lower based on observed completion times
+- Use `timeout 450` for external CLI commands (`gtimeout` on macOS). If neither is available, omit the timeout prefix — time limits will not be enforced. Adjust higher or lower based on observed completion times.
 - Capture stderr from external tools to report failures clearly
 - If an external model times out persistently, ask the user whether to retry with a higher timeout. Warn that retrying spawns external AI agents that may consume tokens billed to other provider accounts (Gemini, OpenAI, Cursor, etc.).
