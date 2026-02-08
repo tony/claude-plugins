@@ -1,0 +1,44 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "plugins/**"
+      - ".claude-plugin/**"
+      - "scripts/**"
+      - "pyproject.toml"
+  pull_request:
+    paths:
+      - "plugins/**"
+      - ".claude-plugin/**"
+      - "scripts/**"
+      - "pyproject.toml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Ruff check
+        run: uv run ruff check scripts/
+
+      - name: Ruff format
+        run: uv run ruff format --check scripts/
+
+      - name: Type check
+        run: uv run basedpyright scripts/
+
+      - name: Tests
+        run: uv run pytest scripts/ -q
+
+      - name: Marketplace lint
+        run: uv run scripts/marketplace.py lint
