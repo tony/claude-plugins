@@ -13,22 +13,28 @@ Language-agnostic workflow plugins for [Claude Code](https://docs.anthropic.com/
 
 ## Installation
 
-Install a plugin from this marketplace repository:
+Add the marketplace:
 
 ```console
-/plugin install multi-model@tony/claude-plugins
+/plugin marketplace add tony/claude-plugins
+```
+
+Then install any plugin:
+
+```console
+/plugin install multi-model@claude-plugins
 ```
 
 ```console
-/plugin install rebase@tony/claude-plugins
+/plugin install rebase@claude-plugins
 ```
 
 ```console
-/plugin install changelog@tony/claude-plugins
+/plugin install changelog@claude-plugins
 ```
 
 ```console
-/plugin install tdd@tony/claude-plugins
+/plugin install tdd@claude-plugins
 ```
 
 ## Design Philosophy
