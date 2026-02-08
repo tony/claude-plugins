@@ -395,6 +395,128 @@ def _validate_skills_dir(plugin_name: str, skills_dir: Path) -> list[str]:
     return errors
 
 
+def _validate_mcp_json(plugin_name: str, path: Path) -> list[str]:
+    """Validate .mcp.json structural requirements.
+
+    Parameters
+    ----------
+    plugin_name : str
+        Plugin name for error messages.
+    path : Path
+        Path to the .mcp.json file.
+
+    Returns
+    -------
+    list[str]
+        Error messages (empty if valid).
+
+    Examples
+    --------
+    >>> from pathlib import Path
+    >>> import tempfile
+    >>> d = tempfile.mkdtemp()
+    >>> p = Path(d) / ".mcp.json"
+    >>> _ = p.write_text('{"server": {"type": "http", "url": "http://localhost"}}')
+    >>> _validate_mcp_json("test", p)
+    []
+
+    Non-dict top-level is rejected:
+
+    >>> _ = p.write_text('[]')
+    >>> _validate_mcp_json("test", p)
+    ['[test] .mcp.json: top-level value must be an object']
+
+    Non-dict server entries are rejected:
+
+    >>> _ = p.write_text('{"server": "bad"}')
+    >>> _validate_mcp_json("test", p)
+    ["[test] .mcp.json: server entry 'server' must be an object"]
+    """
+    errors: list[str] = []
+    try:
+        data = t.cast("object", json.loads(path.read_text(encoding="utf-8")))
+    except json.JSONDecodeError as exc:
+        errors.append(f"[{plugin_name}] .mcp.json: invalid JSON: {exc}")
+        return errors
+
+    if not isinstance(data, dict):
+        errors.append(f"[{plugin_name}] .mcp.json: top-level value must be an object")
+        return errors
+
+    servers = t.cast("dict[str, object]", data)
+    for key, value in servers.items():
+        if not isinstance(value, dict):
+            errors.append(f"[{plugin_name}] .mcp.json: server entry '{key}' must be an object")
+    return errors
+
+
+def _validate_lsp_json(plugin_name: str, path: Path) -> list[str]:
+    """Validate .lsp.json structural requirements.
+
+    Parameters
+    ----------
+    plugin_name : str
+        Plugin name for error messages.
+    path : Path
+        Path to the .lsp.json file.
+
+    Returns
+    -------
+    list[str]
+        Error messages (empty if valid).
+
+    Examples
+    --------
+    >>> from pathlib import Path
+    >>> import tempfile
+    >>> d = tempfile.mkdtemp()
+    >>> p = Path(d) / ".lsp.json"
+    >>> data = '{"pyright": {"command": "pyright-langserver",'
+    >>> data += ' "extensionToLanguage": {".py": "python"}}}'
+    >>> _ = p.write_text(data)
+    >>> _validate_lsp_json("test", p)
+    []
+
+    Non-dict top-level is rejected:
+
+    >>> _ = p.write_text('[]')
+    >>> _validate_lsp_json("test", p)
+    ['[test] .lsp.json: top-level value must be an object']
+
+    Missing required fields are reported:
+
+    >>> _ = p.write_text('{"pyright": {"command": "pyright-langserver"}}')
+    >>> _validate_lsp_json("test", p)
+    ["[test] .lsp.json: server 'pyright' missing required field 'extensionToLanguage'"]
+
+    >>> _ = p.write_text('{"pyright": {"extensionToLanguage": {".py": "python"}}}')
+    >>> _validate_lsp_json("test", p)
+    ["[test] .lsp.json: server 'pyright' missing required field 'command'"]
+    """
+    errors: list[str] = []
+    try:
+        data = t.cast("object", json.loads(path.read_text(encoding="utf-8")))
+    except json.JSONDecodeError as exc:
+        errors.append(f"[{plugin_name}] .lsp.json: invalid JSON: {exc}")
+        return errors
+
+    if not isinstance(data, dict):
+        errors.append(f"[{plugin_name}] .lsp.json: top-level value must be an object")
+        return errors
+
+    servers = t.cast("dict[str, object]", data)
+    for key, value in servers.items():
+        if not isinstance(value, dict):
+            errors.append(f"[{plugin_name}] .lsp.json: server entry '{key}' must be an object")
+            continue
+        errors.extend(
+            f"[{plugin_name}] .lsp.json: server '{key}' missing required field '{field}'"
+            for field in ("command", "extensionToLanguage")
+            if field not in value
+        )
+    return errors
+
+
 def validate_plugin_dir(plugin_dir: Path) -> list[str]:
     """Validate a single plugin directory structure.
 
@@ -420,7 +542,11 @@ def validate_plugin_dir(plugin_dir: Path) -> list[str]:
                 "dict[str, t.Any]",
                 json.loads(plugin_json_path.read_text(encoding="utf-8")),
             )
-            _ = PluginJson.model_validate(raw)
+            pj = PluginJson.model_validate(raw)
+            if pj.name != name:
+                errors.append(
+                    f"[{name}] plugin.json name '{pj.name}' does not match directory name '{name}'"
+                )
         except (json.JSONDecodeError, pydantic.ValidationError) as exc:
             errors.append(f"[{name}] Invalid plugin.json: {exc}")
 
@@ -469,6 +595,16 @@ def validate_plugin_dir(plugin_dir: Path) -> list[str]:
         if not hooks_json.exists():
             errors.append(f"[{name}] hooks/ exists but missing hooks.json")
 
+    # Validate .mcp.json structure
+    mcp_json_path = plugin_dir / ".mcp.json"
+    if mcp_json_path.exists():
+        errors.extend(_validate_mcp_json(name, mcp_json_path))
+
+    # Validate .lsp.json structure
+    lsp_json_path = plugin_dir / ".lsp.json"
+    if lsp_json_path.exists():
+        errors.extend(_validate_lsp_json(name, lsp_json_path))
+
     return errors
 
 
@@ -498,6 +634,16 @@ def lint() -> None:
             if not source_path.exists():
                 errors.append(
                     f"Marketplace entry '{entry.name}': source path '{entry.source}' does not exist"
+                )
+
+        # Check for duplicate plugin names
+        seen_names: dict[str, int] = {}
+        for entry in manifest.plugins:
+            seen_names[entry.name] = seen_names.get(entry.name, 0) + 1
+        for dup_name, count in sorted(seen_names.items()):
+            if count > 1:
+                errors.append(
+                    f"Duplicate plugin name '{dup_name}' appears {count} times in marketplace.json"
                 )
 
         # Validate each plugin directory
@@ -535,13 +681,29 @@ def lint() -> None:
 
 
 @app.command()
-def sync(*, write: bool = False) -> None:
+def sync(*, write: bool = False, check: bool = False) -> None:
     """Compare discovered plugins with marketplace manifest.
 
     Parameters
     ----------
     write : bool
         If True, update marketplace.json with discovered plugins.
+    check : bool
+        If True, exit with code 1 when drift is detected (for CI).
+
+    Examples
+    --------
+    The ``--check`` flag is designed for CI pipelines:
+
+    >>> import subprocess
+    >>> result = subprocess.run(
+    ...     ["python", "scripts/marketplace.py", "sync", "--check"],
+    ...     capture_output=True,
+    ...     text=True,
+    ...     cwd=REPO_ROOT,
+    ... )
+    >>> result.returncode == 0  # 0 means in sync
+    True
     """
     manifest = load_marketplace()
     discovered = discover_plugins()
@@ -567,6 +729,14 @@ def sync(*, write: bool = False) -> None:
 
     console.print(table)
 
+    if check:
+        msg = (
+            "\n[red bold]Marketplace manifest is out of sync.[/red bold]"
+            " Run 'sync --write' to update."
+        )
+        console.print(msg)
+        raise SystemExit(1)
+
     if not write:
         console.print("\nRun with [bold]--write[/bold] to update marketplace.json.")
         return
@@ -589,6 +759,11 @@ def sync(*, write: bool = False) -> None:
             category="development",
         )
         manifest.plugins.append(new_entry)
+        msg = (
+            f"[yellow]Warning:[/yellow] Plugin '{name}' defaulting to"
+            " category='development' — update marketplace.json if needed"
+        )
+        console.print(msg)
 
     # Remove missing plugins
     manifest.plugins = [e for e in manifest.plugins if e.name not in removals]
