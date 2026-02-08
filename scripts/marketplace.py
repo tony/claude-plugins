@@ -8,7 +8,7 @@
 #     "pyyaml>=6.0",
 # ]
 # ///
-"""Marketplace management CLI for claude-plugins.
+"""Marketplace management CLI for ai-workflow-plugins.
 
 Validates marketplace manifests, plugin structures, and command frontmatter.
 Syncs the marketplace manifest with discovered plugin directories.
@@ -40,12 +40,35 @@ import rich.table
 import typer
 import yaml
 
+RESERVED_MARKETPLACE_NAMES = frozenset(
+    {
+        "claude-code-marketplace",
+        "claude-code-plugins",
+        "claude-plugins-official",
+        "anthropic-marketplace",
+        "anthropic-plugins",
+        "agent-skills",
+        "life-sciences",
+    }
+)
+"""Names explicitly reserved by the Claude Code plugin system."""
+
+_PLUGIN_RELATED_WORDS = frozenset(
+    {
+        "plugin",
+        "plugins",
+        "marketplace",
+        "tools",
+        "extensions",
+    }
+)
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MARKETPLACE_PATH = REPO_ROOT / ".claude-plugin" / "marketplace.json"
 PLUGINS_DIR = REPO_ROOT / "plugins"
 
 app = typer.Typer(
-    help="Marketplace management CLI for claude-plugins.",
+    help="Marketplace management CLI for ai-workflow-plugins.",
     invoke_without_command=True,
 )
 console = rich.console.Console()
@@ -53,7 +76,7 @@ console = rich.console.Console()
 
 @app.callback()
 def _main(ctx: typer.Context) -> None:  # pyright: ignore[reportUnusedFunction]
-    """Marketplace management CLI for claude-plugins."""
+    """Marketplace management CLI for ai-workflow-plugins."""
     if ctx.invoked_subcommand is None:
         console.print(ctx.get_help())
 
@@ -203,6 +226,76 @@ def load_marketplace() -> MarketplaceManifest:
         raise SystemExit(1)
     raw = t.cast("dict[str, t.Any]", json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8")))
     return MarketplaceManifest.model_validate(raw)
+
+
+def validate_marketplace_name(name: str) -> list[str]:
+    """Check a marketplace name against reserved name restrictions.
+
+    Returns a list of error messages (empty if the name is valid).
+
+    Parameters
+    ----------
+    name : str
+        The marketplace name to validate.
+
+    Returns
+    -------
+    list[str]
+        Error messages for any violations found.
+
+    Examples
+    --------
+    Reserved names are rejected:
+
+    >>> validate_marketplace_name("claude-plugins-official")
+    ["Marketplace name 'claude-plugins-official' is reserved"]
+
+    Names containing 'claude' with plugin-related words are rejected:
+
+    >>> errs = validate_marketplace_name("claude-plugins")
+    >>> len(errs) == 1 and "impersonates" in errs[0]
+    True
+
+    Names containing 'anthropic' are rejected:
+
+    >>> errs = validate_marketplace_name("anthropic-tools-v2")
+    >>> len(errs) == 1 and "anthropic" in errs[0]
+    True
+
+    Non-reserved names pass:
+
+    >>> validate_marketplace_name("ai-workflow-plugins")
+    []
+    """
+    errors: list[str] = []
+
+    if name in RESERVED_MARKETPLACE_NAMES:
+        errors.append(f"Marketplace name '{name}' is reserved")
+        return errors
+
+    if "anthropic" in name:
+        errors.append(
+            f"Marketplace name '{name}' impersonates an official marketplace (contains 'anthropic')"
+        )
+        return errors
+
+    if "official" in name:
+        errors.append(
+            f"Marketplace name '{name}' impersonates an official marketplace (contains 'official')"
+        )
+        return errors
+
+    if "claude" in name:
+        for word in _PLUGIN_RELATED_WORDS:
+            if word in name:
+                msg = (
+                    f"Marketplace name '{name}' impersonates an official"
+                    f" marketplace (contains 'claude' with '{word}')"
+                )
+                errors.append(msg)
+                return errors
+
+    return errors
 
 
 def discover_plugins() -> list[Path]:
@@ -395,6 +488,10 @@ def lint() -> None:
         manifest = None
 
     if manifest is not None:
+        # Validate marketplace name against reserved names
+        name_errors = validate_marketplace_name(manifest.name)
+        errors.extend(name_errors)
+
         # Validate each plugin entry's source path
         for entry in manifest.plugins:
             source_path = REPO_ROOT / entry.source
