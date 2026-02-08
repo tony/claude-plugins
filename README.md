@@ -1,6 +1,7 @@
 # ai-workflow-plugins
 
-Language-agnostic workflow plugins for [Claude Code](https://docs.anthropic.com/en/docs/claude-code).
+A third-party [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md)
+providing language-agnostic AI / agentic workflow plugins for DX efficiency.
 
 > **Warning:** Review plugins before installing. Anthropic does not control plugin
 > contents and cannot verify they work as intended.
