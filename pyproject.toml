@@ -8,6 +8,10 @@ dev = [
     "ruff>=0.14",
     "basedpyright>=1.37",
     "pytest>=9.0",
+    "pydantic>=2.0",
+    "rich>=13.0",
+    "typer>=0.15",
+    "pyyaml>=6.0",
 ]
 
 [tool.ruff]
