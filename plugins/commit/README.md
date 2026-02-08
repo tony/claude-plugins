@@ -4,6 +4,14 @@ Create git commits following project conventions with format enforcement and saf
 
 ## Installation
 
+Add the marketplace:
+
+```console
+/plugin marketplace add tony/ai-workflow-plugins
+```
+
+Install the plugin:
+
 ```console
 /plugin install commit@ai-workflow-plugins
 ```

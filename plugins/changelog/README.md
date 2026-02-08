@@ -2,6 +2,20 @@
 
 Generate categorized changelog entries from branch commits and PR context.
 
+## Installation
+
+Add the marketplace:
+
+```console
+/plugin marketplace add tony/ai-workflow-plugins
+```
+
+Install the plugin:
+
+```console
+/plugin install changelog@ai-workflow-plugins
+```
+
 ## Command
 
 | Command | Description |

@@ -2,6 +2,20 @@
 
 Automated rebase onto trunk with conflict prediction, resolution, and quality gate verification.
 
+## Installation
+
+Add the marketplace:
+
+```console
+/plugin marketplace add tony/ai-workflow-plugins
+```
+
+Install the plugin:
+
+```console
+/plugin install rebase@ai-workflow-plugins
+```
+
 ## Command
 
 | Command | Description |

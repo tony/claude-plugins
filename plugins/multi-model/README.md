@@ -2,6 +2,20 @@
 
 Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, review, and synthesize the best of all models.
 
+## Installation
+
+Add the marketplace:
+
+```console
+/plugin marketplace add tony/ai-workflow-plugins
+```
+
+Install the plugin:
+
+```console
+/plugin install multi-model@ai-workflow-plugins
+```
+
 ## Commands
 
 | Command | Description |

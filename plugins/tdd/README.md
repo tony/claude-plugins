@@ -2,6 +2,20 @@
 
 TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify.
 
+## Installation
+
+Add the marketplace:
+
+```console
+/plugin marketplace add tony/ai-workflow-plugins
+```
+
+Install the plugin:
+
+```console
+/plugin install tdd@ai-workflow-plugins
+```
+
 ## Command
 
 | Command | Description |
