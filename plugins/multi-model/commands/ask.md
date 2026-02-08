@@ -53,6 +53,16 @@ which agent 2>/dev/null && echo "agent:available" || echo "agent:missing"
 
 Report which models will participate and which backend each uses.
 
+### Timeout command
+
+```bash
+which timeout 2>/dev/null && echo "timeout:available" || { which gtimeout 2>/dev/null && echo "gtimeout:available" || echo "timeout:none"; }
+```
+
+On Linux, `timeout` is available by default. On macOS, `gtimeout` is available
+via GNU coreutils. If neither is found, run external commands without a timeout
+prefix — time limits will not be enforced. Do not install packages automatically.
+
 ---
 
 ## Phase 3: Ask All Models in Parallel

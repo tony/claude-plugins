@@ -62,6 +62,16 @@ Each reviewer slot is resolved independently using a **native CLI first, `agent`
 
 Report which reviewers will participate and which backend is used (native or agent fallback). If only Claude is available, proceed with Claude-only review and note the missing tools.
 
+### Timeout command
+
+```bash
+which timeout 2>/dev/null && echo "timeout:available" || { which gtimeout 2>/dev/null && echo "gtimeout:available" || echo "timeout:none"; }
+```
+
+On Linux, `timeout` is available by default. On macOS, `gtimeout` is available
+via GNU coreutils. If neither is found, run external commands without a timeout
+prefix — time limits will not be enforced. Do not install packages automatically.
+
 ---
 
 ## Phase 3: Launch Reviews in Parallel
