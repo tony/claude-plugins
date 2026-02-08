@@ -1,0 +1,8 @@
+{
+  "name": "tdd",
+  "description": "TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify",
+  "author": {
+    "name": "Tony Narlock",
+    "email": "tony@git-pull.com"
+  }
+}
