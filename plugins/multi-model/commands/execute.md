@@ -55,6 +55,11 @@ which agent 2>/dev/null && echo "agent:available" || echo "agent:missing"
 | **Gemini** | `gemini` binary | `agent --model gemini-3-pro` | `gemini-3-pro` |
 | **GPT** | `codex` binary | `agent --model gpt-5.2` | `gpt-5.2` |
 
+**Resolution logic** for each external slot:
+1. Native CLI found → use it
+2. Else `agent` found → use `agent` with `--model` flag
+3. Else → slot unavailable, note in report
+
 Report which models will participate and which backend each uses.
 
 ### Timeout command
