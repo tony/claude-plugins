@@ -98,11 +98,10 @@ Launch a Task agent with `subagent_type: "general-purpose"` to create Claude's p
 ### Gemini Plan (if available)
 
 **Planning prompt** (same for both backends):
-> Create an implementation plan for the following task. Read relevant codebase files and AGENTS.md/CLAUDE.md for conventions. Do NOT modify any files.
+> <task description>
 >
-> Task: <task description>
->
-> Include: files to modify, implementation steps in order, architecture decisions, test strategy, and risks. Reference actual files and patterns from the codebase.
+> ---
+> Additional instructions: Read AGENTS.md/CLAUDE.md for project conventions. Reference actual files, functions, and patterns from the codebase. Do NOT modify any files — plan only. Include: files to modify, implementation steps in order, architecture decisions, test strategy, and risks.
 
 **Native (`gemini` CLI)**:
 ```bash
@@ -117,19 +116,17 @@ timeout 600 agent -p -f --model gemini-3-pro "<planning prompt>"
 ### GPT Plan (if available)
 
 **Planning prompt** (same for both backends):
-> Create an implementation plan for the following task. Read relevant codebase files and AGENTS.md/CLAUDE.md for conventions. Do NOT modify any files.
+> <task description>
 >
-> Task: <task description>
->
-> Include: files to modify, implementation steps in order, architecture decisions, test strategy, and risks. Reference actual files and patterns from the codebase.
+> ---
+> Additional instructions: Read AGENTS.md/CLAUDE.md for project conventions. Reference actual files, functions, and patterns from the codebase. Do NOT modify any files — plan only. Include: files to modify, implementation steps in order, architecture decisions, test strategy, and risks.
 
 **Native (`codex` CLI)**:
 ```bash
-timeout 600 codex \
-    --sandbox danger-full-access \
-    --ask-for-approval never \
+timeout 600 codex exec \
+    --dangerously-bypass-approvals-and-sandbox \
     -c model_reasoning_effort=medium \
-    exec "<planning prompt>"
+    "<planning prompt>"
 ```
 
 **Fallback (`agent` CLI)**:

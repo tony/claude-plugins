@@ -112,9 +112,10 @@ Launch a Task agent with `subagent_type: "general-purpose"` to implement in the 
 ### Gemini Implementation (worktree)
 
 **Implementation prompt** (same for both backends):
-> Implement the following task. Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
+> <user's prompt>
 >
-> Task: <user's prompt>
+> ---
+> Additional instructions: Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
 
 **Native (`gemini` CLI)** — run in the worktree directory:
 ```bash
@@ -129,17 +130,17 @@ cd ../<repo-name>-mm-gemini && timeout 600 agent -p -f --model gemini-3-pro "<im
 ### GPT Implementation (worktree)
 
 **Implementation prompt** (same for both backends):
-> Implement the following task. Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
+> <user's prompt>
 >
-> Task: <user's prompt>
+> ---
+> Additional instructions: Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
 
 **Native (`codex` CLI)** — run in the worktree directory:
 ```bash
-cd ../<repo-name>-mm-gpt && timeout 600 codex \
-    --sandbox danger-full-access \
-    --ask-for-approval never \
+cd ../<repo-name>-mm-gpt && timeout 600 codex exec \
+    --dangerously-bypass-approvals-and-sandbox \
     -c model_reasoning_effort=medium \
-    exec "<implementation prompt>"
+    "<implementation prompt>"
 ```
 
 **Fallback (`agent` CLI)**:

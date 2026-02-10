@@ -83,11 +83,10 @@ Launch a Task agent with `subagent_type: "general-purpose"` to answer the questi
 ### Gemini Answer (if available)
 
 **Question prompt** (same for both backends):
-> Answer this question about the codebase. Read relevant files and AGENTS.md/CLAUDE.md for conventions. Do NOT modify any files.
+> <user's question>
 >
-> Question: <user's question>
->
-> Provide a clear answer citing specific files where relevant.
+> ---
+> Additional instructions: Read relevant files and AGENTS.md/CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
 
 **Native (`gemini` CLI)**:
 ```bash
@@ -102,19 +101,17 @@ timeout 450 agent -p -f --model gemini-3-pro "<question prompt>"
 ### GPT Answer (if available)
 
 **Question prompt** (same for both backends):
-> Answer this question about the codebase. Read relevant files and AGENTS.md/CLAUDE.md for conventions. Do NOT modify any files.
+> <user's question>
 >
-> Question: <user's question>
->
-> Provide a clear answer citing specific files where relevant.
+> ---
+> Additional instructions: Read relevant files and AGENTS.md/CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
 
 **Native (`codex` CLI)**:
 ```bash
-timeout 450 codex \
-    --sandbox danger-full-access \
-    --ask-for-approval never \
+timeout 450 codex exec \
+    --dangerously-bypass-approvals-and-sandbox \
     -c model_reasoning_effort=medium \
-    exec "<question prompt>"
+    "<question prompt>"
 ```
 
 **Fallback (`agent` CLI)**:

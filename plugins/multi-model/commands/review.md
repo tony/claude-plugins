@@ -108,11 +108,10 @@ Launch a Task agent with `subagent_type: "general-purpose"` to perform Claude's 
 Use the resolved backend from Phase 2. The review prompt is the same regardless of backend.
 
 **Review prompt** (used by both backends):
-> You are a code reviewer. Analyze the changes since the trunk in this branch, consider AGENTS.md.
+> <review context from $ARGUMENTS, or default: Review the changes on this branch for bugs, security issues, and convention violations.>
 >
-> Run git diff origin/<trunk>...HEAD to see the changes. Read AGENTS.md or CLAUDE.md for project conventions.
->
-> For each issue, report: severity (Critical/Important/Suggestion), file and line, description, and recommendation. Focus on bugs, logic errors, security issues, and convention violations.
+> ---
+> Additional instructions: Run git diff origin/<trunk>...HEAD to see the changes. Read AGENTS.md or CLAUDE.md for project conventions. For each issue, report: severity (Critical/Important/Suggestion), file and line, description, and recommendation. Focus on bugs, logic errors, security issues, and convention violations.
 
 **Native (`gemini` CLI)**:
 
@@ -131,20 +130,18 @@ timeout 900 agent -p -f --model gemini-3-pro "<review prompt>"
 Use the resolved backend from Phase 2. The review prompt is the same regardless of backend.
 
 **Review prompt** (used by both backends):
-> You are a code reviewer. Analyze the changes since the trunk in this branch, consider AGENTS.md.
+> <review context from $ARGUMENTS, or default: Review the changes on this branch for bugs, security issues, and convention violations.>
 >
-> Run git diff origin/<trunk>...HEAD to see the changes. Read AGENTS.md or CLAUDE.md for project conventions.
->
-> For each issue, report: severity (Critical/Important/Suggestion), file and line, description, and recommendation. Focus on bugs, logic errors, security issues, and convention violations.
+> ---
+> Additional instructions: Run git diff origin/<trunk>...HEAD to see the changes. Read AGENTS.md or CLAUDE.md for project conventions. For each issue, report: severity (Critical/Important/Suggestion), file and line, description, and recommendation. Focus on bugs, logic errors, security issues, and convention violations.
 
 **Native (`codex` CLI)**:
 
 ```bash
-timeout 900 codex \
-    --sandbox danger-full-access \
-    --ask-for-approval never \
+timeout 900 codex exec \
+    --dangerously-bypass-approvals-and-sandbox \
     -c model_reasoning_effort=medium \
-    exec "<review prompt>"
+    "<review prompt>"
 ```
 
 **Fallback (`agent` CLI)**:
