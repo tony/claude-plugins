@@ -1,7 +1,7 @@
 ---
 description: Multi-model prompt — run a prompt across Claude, Gemini, and GPT in isolated git worktrees, then pick the best approach
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Edit", "Write", "Task", "AskUserQuestion"]
-argument-hint: <implementation prompt> [x2|multipass] [timeout:<seconds>]
+argument-hint: "<implementation prompt> [x2|multipass] [timeout:<seconds>]"
 ---
 
 # Multi-Model Prompt

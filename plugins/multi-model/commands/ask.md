@@ -1,7 +1,7 @@
 ---
 description: Multi-model question — ask Claude, Gemini, and GPT the same question in parallel, then synthesize the best answer
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Task", "AskUserQuestion"]
-argument-hint: <question> [x2|multipass] [timeout:<seconds>]
+argument-hint: "<question> [x2|multipass] [timeout:<seconds>]"
 ---
 
 # Multi-Model Ask

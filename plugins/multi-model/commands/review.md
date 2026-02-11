@@ -1,7 +1,7 @@
 ---
 description: Multi-model code review — runs Claude, Gemini, and GPT reviews in parallel, then synthesizes findings
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Task", "AskUserQuestion"]
-argument-hint: [focus area] [x2|multipass] [timeout:<seconds>]
+argument-hint: "[focus area] [x2|multipass] [timeout:<seconds>]"
 ---
 
 # Multi-Model Code Review

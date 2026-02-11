@@ -1,7 +1,7 @@
 ---
 description: Multi-model execute — run a task across Claude, Gemini, and GPT in git worktrees, then synthesize the best of all approaches
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Edit", "Write", "Task", "AskUserQuestion"]
-argument-hint: <task description> [x2|multipass] [timeout:<seconds>]
+argument-hint: "<task description> [x2|multipass] [timeout:<seconds>]"
 ---
 
 # Multi-Model Execute

@@ -1,7 +1,7 @@
 ---
 description: Multi-model planning — get implementation plans from Claude, Gemini, and GPT, then synthesize the best plan
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Task", "AskUserQuestion"]
-argument-hint: <task description> [x2|multipass] [timeout:<seconds>]
+argument-hint: "<task description> [x2|multipass] [timeout:<seconds>]"
 ---
 
 # Multi-Model Plan
