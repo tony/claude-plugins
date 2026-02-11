@@ -1,7 +1,7 @@
 ---
 description: Multi-model planning — get implementation plans from Claude, Gemini, and GPT, then synthesize the best plan
 allowed-tools: ["Bash", "Read", "Grep", "Glob", "Task", "AskUserQuestion"]
-argument-hint: <task description> [x2|x3|ultrathink] [timeout:<seconds>]
+argument-hint: <task description> [x2|multipass] [timeout:<seconds>]
 ---
 
 # Multi-Model Plan
@@ -43,15 +43,14 @@ The task description comes from `$ARGUMENTS`. If no arguments are provided, ask 
 
 ### Step 1: Parse Trigger Words
 
-Scan `$ARGUMENTS` case-insensitively for multi-pass and timeout triggers. Strip matched triggers from the prompt text before sending to models.
+Only the **first line and last line** of `$ARGUMENTS` are scanned for triggers (case-insensitively). This prevents pasted content in the body from accidentally matching. If a trigger-like word appears elsewhere in `$ARGUMENTS` but not on the first/last line, use `AskUserQuestion` to ask the user whether they intended it as a trigger. Strip matched triggers from the prompt text before sending to models.
 
 **Multi-pass triggers**:
 
-| Trigger | Passes |
+| Trigger | Effect |
 |---------|--------|
-| `x2` or `multipass` | 2 |
-| `x3` or `ultrathink` | 3 |
-| `x<N>` (N = 2–5, regex `\bx([2-5])\b`) | N |
+| `multipass` (case-insensitive) | Hint for 2 passes |
+| `x<N>` (N = 2–5, regex `\bx([2-5])\b`) | Hint for N passes |
 
 Values above 5 are capped at 5 with a note to the user.
 
@@ -63,30 +62,27 @@ Values above 5 are capped at 5 with a note to the user.
 | `timeout:none` | Disable timeout |
 
 **Config flags** (used in Step 2):
-- `has_pass_config` = true if any multi-pass trigger found OR word "passes" appears in `$ARGUMENTS`
-- `has_timeout_config` = true if any timeout trigger found OR word "timeout" appears in `$ARGUMENTS`
+- `pass_hint` = parsed pass count if trigger found on first/last line, else null. If trigger found only in body, ask user to disambiguate before setting.
+- `has_timeout_config` = true if `timeout:<seconds>` or `timeout:none` found on first/last line. If found only in body, ask user to disambiguate before setting.
 
 ### Step 2: Interactive Configuration
 
-Skip individual questions whose config was already provided via triggers:
-- If `has_pass_config` is true, omit Question 1 and use the parsed pass count.
-- If `has_timeout_config` is true, omit Question 2 and use the parsed/default timeout.
-- If both are true, skip this step entirely.
+**Question 1 (Passes) — always asked**. Trigger hints only change option ordering.
 
-If `AskUserQuestion` is unavailable (headless mode via `claude -p`), use defaults silently (1 pass, 600s timeout).
+If `AskUserQuestion` is unavailable (headless mode via `claude -p`), use `pass_hint` value if set, otherwise default to 1 pass. Timeout uses parsed value if `has_timeout_config`, otherwise 600s.
 
-Use `AskUserQuestion` with the remaining questions (one or both):
+Use `AskUserQuestion` to prompt the user:
 
-**Question 1 — Passes**:
+**Question 1 — Passes** (always asked):
 - question: "How many synthesis passes? Multi-pass re-runs all models with prior results for deeper refinement."
 - header: "Passes"
-- options:
-  - "1 — single pass (Recommended)" — Run models once and synthesize. Fast and sufficient for most tasks.
+- When `pass_hint` exists (trigger found), move the matching option first with "(Recommended)" suffix. Other options follow in ascending order.
+- When `pass_hint` is null (no trigger), use default ordering:
+  - "1 — single pass (Recommended)" — Run models once and synthesize. Sufficient for most tasks.
   - "2 — multipass" — One refinement round. Models see prior synthesis and can challenge or deepen it.
-  - "3 — ultrathink" — Two refinement rounds. Maximum depth, highest token usage.
-  - "Custom (2–5)" — Specify exact number of passes.
+  - "3 — triple pass" — Two refinement rounds. Maximum depth, highest token usage.
 
-**Question 2 — Timeout**:
+**Question 2 — Timeout** (skipped only when `has_timeout_config` is true):
 - question: "Timeout for external model commands?"
 - header: "Timeout"
 - options:

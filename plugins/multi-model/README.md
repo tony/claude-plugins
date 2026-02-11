@@ -55,15 +55,14 @@ Multi-pass re-runs all models with the prior synthesis prepended as context, all
 
 ### Trigger Words
 
-Append trigger words to any command's arguments to control pass count:
+Append trigger words to any command's arguments to hint at pass count:
 
-| Trigger | Passes | Example |
+| Trigger | Effect | Example |
 |---------|--------|---------|
-| `x2` or `multipass` | 2 | `/multi-model:ask what is this project? x2` |
-| `x3` or `ultrathink` | 3 | `/multi-model:plan add auth ultrathink` |
-| `x<N>` (N = 2–5) | N | `/multi-model:review x4` |
+| `multipass` | Hints 2 passes | `/multi-model:ask what is this? multipass` |
+| `x<N>` (N = 2–5) | Hints N passes | `/multi-model:plan add auth x3` |
 
-Values above 5 are capped at 5.
+Triggers are hints — commands always prompt for confirmation. Values above 5 are capped at 5. Only the first and last line of arguments are scanned; trigger-like words found elsewhere prompt for disambiguation.
 
 ### Timeout Triggers
 
@@ -78,12 +77,12 @@ Default timeouts per command: ask (450s), plan (600s), prompt (600s), review (90
 
 ### Interactive Configuration
 
-When no trigger words or timeout overrides are present in the arguments, commands prompt via `AskUserQuestion` for:
+Commands always prompt via `AskUserQuestion` for pass count, with trigger hints biasing the recommended option:
 
-1. **Pass count** — choose single pass, multipass (2), ultrathink (3), or custom (2–5)
-2. **Timeout** — choose the default, quick (180s), long (900s), or no timeout
+1. **Pass count** (always asked) — choose single pass (1), multipass (2), or triple pass (3). If a trigger hint is present, the matching option is marked as recommended.
+2. **Timeout** (asked unless structured trigger present) — choose the default, quick (180s), long (900s), or no timeout. Skipped when `timeout:<seconds>` or `timeout:none` is provided.
 
-This prompt is skipped when trigger words are detected or when running in headless mode (`claude -p`), which uses defaults silently.
+In headless mode (`claude -p`), pass count uses the trigger hint value if present, otherwise defaults to 1. Timeout uses the parsed value if provided, otherwise the per-command default.
 
 ## Prerequisites
 

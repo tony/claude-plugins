@@ -7,7 +7,7 @@ allowed-tools: ["Bash", "Read", "Grep", "Glob", "Edit", "Write", "Task"]
 
 Process multi-model code review findings from the conversation context. Validate each finding independently against the actual codebase and project conventions, add test coverage where applicable, apply fixes as separate atomic commits, and ensure all quality gates pass before each commit.
 
-Multi-pass (`x2`, `ultrathink`, etc.) is not applicable to this command — it is already iterative by nature. Trigger words are ignored if present.
+Multi-pass (`multipass`, `x2`, etc.) is not applicable to this command — it is already iterative by nature. Trigger words are ignored if present.
 
 ---
 
