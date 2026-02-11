@@ -17,6 +17,7 @@ providing language-agnostic AI / agentic workflow plugins for DX efficiency.
 | [rebase](plugins/rebase/) | Development | Automated rebase onto trunk with conflict prediction, resolution, and quality gate verification |
 | [changelog](plugins/changelog/) | Productivity | Generate categorized changelog entries from branch commits and PR context |
 | [tdd](plugins/tdd/) | Testing | TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify |
+| [model-cli](plugins/model-cli/) | Development | Run prompts through individual AI CLIs — codex/GPT, gemini, and cursor/agent with fallback support |
 
 ## Installation
 
@@ -48,6 +49,10 @@ Then install any plugin:
 
 ```console
 /plugin install tdd@ai-workflow-plugins
+```
+
+```console
+/plugin install model-cli@ai-workflow-plugins
 ```
 
 ## Design Philosophy
