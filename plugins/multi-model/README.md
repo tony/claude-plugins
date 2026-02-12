@@ -86,83 +86,153 @@ In headless mode (`claude -p`), pass count uses the trigger hint value if presen
 
 ## Session Artifacts
 
-All commands persist model outputs, prompts, and synthesis results to a structured directory under `/tmp/ai-aip/`. This enables post-session inspection, selective reference to prior pass artifacts during multi-pass refinement, and lightweight resume tracking.
+All commands persist model outputs, prompts, and synthesis results to a structured directory under `$AI_AIP_ROOT`. This enables post-session inspection, selective reference to prior pass artifacts during multi-pass refinement, and lightweight resume tracking.
+
+### Storage Root Resolution
+
+The storage root is resolved in this order:
+
+1. `$AI_AIP_ROOT` environment variable (if set)
+2. `$XDG_STATE_HOME/ai-aip` (if `$XDG_STATE_HOME` is set)
+3. `$HOME/.local/state/ai-aip` (Linux default)
+4. `~/Library/Application Support/ai-aip` (macOS, when neither `$AI_AIP_ROOT` nor `$XDG_STATE_HOME` is set)
+5. `~/.ai-aip` (final fallback)
+
+A `/tmp/ai-aip` symlink is created pointing to the resolved root for backward compatibility.
+
+### Repo Identity
+
+Repos are identified by a combination of a slugified directory name and a 12-character SHA-256 hash of the repo key (origin URL + slug, or absolute path for repos without a remote). This prevents collisions between unrelated repos with the same directory name.
+
+Format: `<slug>--<hash>` (e.g., `my-project--a1b2c3d4e5f6`)
+
+### Session Identity
+
+Session IDs combine a UTC timestamp, PID, and random bytes to prevent collisions:
+
+```
+<YYYYMMDD-HHMMSSz>-<PID>-<4 hex chars>
+```
+
+Example: `20260210-143022Z-12345-a1b2`
 
 ### Directory Hierarchy
 
 ```
-/tmp/ai-aip/
-├── ask-sessions/
-│   └── <repo_name>/
-│       ├── index.json
-│       └── <YYYYMMDD-HHMMSS>/
-│           ├── pass-1/
-│           │   ├── prompt.md
-│           │   ├── claude.md
-│           │   ├── gemini.md
-│           │   ├── gpt.md
-│           │   ├── stderr-gemini.txt
-│           │   ├── stderr-gpt.txt
-│           │   └── synthesis.md
-│           ├── pass-2/
-│           │   └── ...
-│           └── metadata.md
-├── plan-sessions/
-│   └── <repo_name>/ ...
-├── review-sessions/
-│   └── <repo_name>/ ...
-├── execute-sessions/
-│   └── <repo_name>/ ...
-└── prompt-sessions/
-    └── <repo_name>/ ...
+$AI_AIP_ROOT/
+└── repos/
+    └── <slug>--<hash>/
+        ├── repo.json
+        └── sessions/
+            ├── ask/
+            │   ├── latest -> <SESSION_ID>
+            │   └── <SESSION_ID>/
+            │       ├── session.json
+            │       ├── events.jsonl
+            │       ├── metadata.md
+            │       ├── pass-0001/
+            │       │   ├── prompt.md
+            │       │   ├── synthesis.md
+            │       │   ├── outputs/
+            │       │   │   ├── claude.md
+            │       │   │   ├── gemini.md
+            │       │   │   └── gpt.md
+            │       │   └── stderr/
+            │       │       ├── gemini.txt
+            │       │       └── gpt.txt
+            │       └── pass-0002/
+            │           └── ...
+            ├── plan/
+            │   └── ...
+            ├── review/
+            │   └── ...
+            ├── execute/
+            │   └── ...
+            └── prompt/
+                └── ...
 ```
 
 Write commands (execute, prompt) add per-pass diff and quality gate artifacts:
 
 ```
-pass-N/
+pass-0001/
 ├── ...
-├── claude.diff
-├── gemini.diff
-├── gpt.diff
-└── quality-gates.md
+├── quality-gates.md
+└── diffs/
+    ├── claude.diff
+    ├── gemini.diff
+    └── gpt.diff
 ```
 
-The repo name is determined via `basename "$(git rev-parse --show-toplevel)"`. Directories are created with `mkdir -p -m 700` and are preserved after the session for user inspection.
+Pass directories use zero-padded 4-digit numbering (`pass-0001`, `pass-0002`, ...) for correct lexicographic sorting. Directories are created with `mkdir -p -m 700` and are preserved after the session for user inspection.
 
-### Index Manifest (`index.json`)
+### Repo Manifest (`repo.json`)
 
-Each `<command>-sessions/<repo_name>/` directory contains an `index.json` that tracks all sessions for that repo and command type:
+Each `repos/<slug>--<hash>/` directory contains a `repo.json` written on the first session for that repo:
 
 ```json
 {
-  "sessions": [
-    {
-      "timestamp": "20260210-143022",
-      "branch": "feature/add-auth",
-      "ref": "abc1234",
-      "status": "completed",
-      "pass_count": 2,
-      "completed_passes": 2,
-      "models": ["claude", "gemini", "gpt"],
-      "prompt_summary": "How does the authentication middleware work?"
-    }
-  ]
+  "schema_version": 1,
+  "slug": "my-project",
+  "id": "a1b2c3d4e5f6",
+  "toplevel": "/home/user/projects/my-project",
+  "origin": "git@github.com:user/my-project.git"
+}
+```
+
+### Session Manifest (`session.json`)
+
+Each session directory contains a `session.json` that tracks session state. Updated via atomic replace (write to `.tmp`, then `mv`):
+
+```json
+{
+  "schema_version": 1,
+  "session_id": "20260210-143022Z-12345-a1b2",
+  "command": "ask",
+  "status": "in_progress",
+  "branch": "feature/add-auth",
+  "ref": "abc1234",
+  "models": ["claude", "gemini", "gpt"],
+  "completed_passes": 0,
+  "prompt_summary": "How does the authentication middleware work?",
+  "created_at": "2026-02-10T14:30:22Z",
+  "updated_at": "2026-02-10T14:30:22Z"
 }
 ```
 
 | Field | Description |
 |-------|-------------|
-| `timestamp` | Session directory name (`YYYYMMDD-HHMMSS`) |
+| `schema_version` | Always `1` |
+| `session_id` | Session directory name |
+| `command` | Which command created this session |
+| `status` | `in_progress` or `completed` |
 | `branch` | Git branch at session start |
 | `ref` | Git commit ref (short SHA) at session start |
-| `status` | `in_progress` or `completed` |
-| `pass_count` | Configured total passes |
-| `completed_passes` | How many passes finished |
 | `models` | Which models participated |
+| `completed_passes` | How many passes finished |
 | `prompt_summary` | First 120 chars of the user's prompt |
+| `created_at` | ISO 8601 UTC timestamp of session start |
+| `updated_at` | ISO 8601 UTC timestamp of last update |
 
-The index is updated at session start (`in_progress`), after each pass (`completed_passes` incremented), and at session end (`completed`).
+The session is updated after each pass (`completed_passes` incremented, `updated_at` refreshed) and at session end (`status` set to `completed`). A `latest` symlink is updated at session end to point to the most recent completed session.
+
+### Event Log (`events.jsonl`)
+
+Each session directory contains an `events.jsonl` file with one JSON object per line:
+
+```json
+{"event":"session_start","timestamp":"2026-02-10T14:30:22Z","command":"ask","models":["claude","gemini","gpt"]}
+```
+
+```json
+{"event":"pass_complete","timestamp":"2026-02-10T14:32:45Z","pass":1,"models_completed":["claude","gemini","gpt"]}
+```
+
+```json
+{"event":"session_complete","timestamp":"2026-02-10T14:32:50Z","completed_passes":1}
+```
+
+To list sessions, scan `session.json` files under `$AI_AIP_ROOT/repos/<slug>--<hash>/sessions/<command>/`. The `latest` symlink points to the most recently completed session for quick access.
 
 ## Prerequisites
 
@@ -189,7 +259,7 @@ If no external CLIs are available, commands fall back to Claude-only mode with a
 
 ## Shell Resilience
 
-All commands use `command -v` (POSIX-portable) instead of `which` for CLI detection. Prompts are written to the session directory (`$SESSION_DIR/pass-N/prompt.md`) to avoid shell metacharacter injection while also persisting artifacts. stderr is captured per-pass (`$SESSION_DIR/pass-N/stderr-<model>.txt`) for failure diagnostics. A structured retry protocol classifies failures (timeout, rate-limit, crash, empty output) and retries retryable failures once before marking a model unavailable.
+All commands use `command -v` (POSIX-portable) instead of `which` for CLI detection. Prompts are written to the session directory (`$SESSION_DIR/pass-NNNN/prompt.md`) to avoid shell metacharacter injection while also persisting artifacts. stderr is captured per-pass (`$SESSION_DIR/pass-NNNN/stderr/<model>.txt`) for failure diagnostics. A structured retry protocol classifies failures (timeout, rate-limit, crash, empty output) and retries retryable failures once before marking a model unavailable.
 
 ## Language-Agnostic Design
 
