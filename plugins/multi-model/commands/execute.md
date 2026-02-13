@@ -256,7 +256,7 @@ Store `$SESSION_DIR` for use in all subsequent phases.
 For each external model (Gemini, GPT — Claude works in the main tree):
 
 ```bash
-git worktree add ../<repo-name>-mm-<model> -b mm/<model>/<timestamp>
+git worktree add ../$REPO_SLUG-mm-<model> -b mm/<model>/<timestamp>
 ```
 
 Example:
@@ -304,12 +304,12 @@ Launch a Task agent with `subagent_type: "general-purpose"` to implement in the 
 
 **Native (`gemini` CLI)** — run in the worktree directory:
 ```bash
-cd ../<repo-name>-mm-gemini && <timeout_cmd> <timeout_seconds> gemini -m pro -y -p "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gemini.txt"
+cd ../$REPO_SLUG-mm-gemini && <timeout_cmd> <timeout_seconds> gemini -m pro -y -p "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gemini.txt"
 ```
 
 **Fallback (`agent` CLI)**:
 ```bash
-cd ../<repo-name>-mm-gemini && <timeout_cmd> <timeout_seconds> agent -p -f --model gemini-3-pro "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gemini.txt"
+cd ../$REPO_SLUG-mm-gemini && <timeout_cmd> <timeout_seconds> agent -p -f --model gemini-3-pro "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gemini.txt"
 ```
 
 ### GPT Implementation (worktree)
@@ -322,7 +322,7 @@ cd ../<repo-name>-mm-gemini && <timeout_cmd> <timeout_seconds> agent -p -f --mod
 
 **Native (`codex` CLI)** — run in the worktree directory:
 ```bash
-cd ../<repo-name>-mm-gpt && <timeout_cmd> <timeout_seconds> codex exec \
+cd ../$REPO_SLUG-mm-gpt && <timeout_cmd> <timeout_seconds> codex exec \
     --yolo \
     -c model_reasoning_effort=medium \
     "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gpt.txt"
@@ -330,7 +330,7 @@ cd ../<repo-name>-mm-gpt && <timeout_cmd> <timeout_seconds> codex exec \
 
 **Fallback (`agent` CLI)**:
 ```bash
-cd ../<repo-name>-mm-gpt && <timeout_cmd> <timeout_seconds> agent -p -f --model gpt-5.2 "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gpt.txt"
+cd ../$REPO_SLUG-mm-gpt && <timeout_cmd> <timeout_seconds> agent -p -f --model gpt-5.2 "$(cat "$SESSION_DIR/pass-0001/prompt.md")" 2>"$SESSION_DIR/pass-0001/stderr/gpt.txt"
 ```
 
 ### Artifact Capture
@@ -369,7 +369,7 @@ git diff HEAD
 
 **External models** (worktrees):
 ```bash
-git -C ../<repo-name>-mm-<model> diff HEAD
+git -C ../$REPO_SLUG-mm-<model> diff HEAD
 ```
 
 After capturing each diff, write it to the session directory:
@@ -392,10 +392,10 @@ For each file in the list, copy it to `$SESSION_DIR/pass-0001/files/claude/<file
 
 **External models** (worktrees):
 ```bash
-git -C ../<repo-name>-mm-<model> diff --name-only --diff-filter=d HEAD
+git -C ../$REPO_SLUG-mm-<model> diff --name-only --diff-filter=d HEAD
 ```
 
-For each file in the list, copy it from the worktree (`../<repo-name>-mm-<model>/<filepath>`) to `$SESSION_DIR/pass-0001/files/<model>/<filepath>` using `mkdir -p` to create intermediate directories.
+For each file in the list, copy it from the worktree (`../$REPO_SLUG-mm-<model>/<filepath>`) to `$SESSION_DIR/pass-0001/files/<model>/<filepath>` using `mkdir -p` to create intermediate directories.
 
 ### Step 2: Run Quality Gates on Each
 
@@ -482,11 +482,11 @@ For each pass from 2 to `pass_count`:
 3. **Clean up old worktrees**:
 
    ```bash
-   git worktree remove ../<repo-name>-mm-gemini --force 2>/dev/null
+   git worktree remove ../$REPO_SLUG-mm-gemini --force 2>/dev/null
    ```
 
    ```bash
-   git worktree remove ../<repo-name>-mm-gpt --force 2>/dev/null
+   git worktree remove ../$REPO_SLUG-mm-gpt --force 2>/dev/null
    ```
 
    ```bash
@@ -569,11 +569,11 @@ Run the project's quality gates as defined in AGENTS.md/CLAUDE.md. All gates mus
 Remove all multi-model worktrees and branches:
 
 ```bash
-git worktree remove ../<repo-name>-mm-gemini --force 2>/dev/null
+git worktree remove ../$REPO_SLUG-mm-gemini --force 2>/dev/null
 ```
 
 ```bash
-git worktree remove ../<repo-name>-mm-gpt --force 2>/dev/null
+git worktree remove ../$REPO_SLUG-mm-gpt --force 2>/dev/null
 ```
 
 ```bash
