@@ -609,6 +609,16 @@ All project quality gates passed.
 ## Session artifacts: $SESSION_DIR
 ```
 
+### Step 6: Restore Stashed Changes
+
+If user changes were stashed in Phase 7 Step 1, restore them:
+
+```bash
+git stash pop
+```
+
+If the pop fails due to merge conflicts with the synthesized changes, notify the user: "Pre-existing uncommitted changes conflicted with the synthesis. Resolve conflicts, then run `git stash drop` to remove the stash entry."
+
 The changes are now in the working tree, unstaged. The user can review and commit them.
 
 At session end: update `session.json` via atomic replace: set `status` to `"completed"`, `updated_at` to now. Append a `session_complete` event to `events.jsonl`. Update `latest` symlink: `ln -sfn "$SESSION_ID" "$AIP_ROOT/repos/$REPO_DIR/sessions/execute/latest"`.

@@ -536,6 +536,11 @@ Present the final-pass comparison and wait for user to pick the winner.
    ```
    Or if there are conflicts, cherry-pick individual commits.
 3. **Snapshot fallback**: If the worktree is unavailable (e.g., cleaned up during multi-pass), apply changes from the snapshot instead — read each file from `$SESSION_DIR/pass-NNNN/files/<model>/` and use Edit/Write to apply to the main tree.
+4. **Restore stashed changes**:
+   ```bash
+   git stash pop
+   ```
+   If the pop fails due to merge conflicts with the adopted changes, notify the user: "Pre-existing uncommitted changes conflicted with the adoption. Resolve conflicts, then run `git stash drop` to remove the stash entry."
 
 ### Cleanup Worktrees
 
