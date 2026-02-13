@@ -97,7 +97,7 @@ Use `AskUserQuestion` to prompt the user:
 - options:
   - "Default (1200s)" — Use this command's built-in default timeout.
   - "Quick — 3 min (180s)" — For fast queries. May timeout on complex tasks.
-  - "Long — 15 min (900s)" — For complex code generation. Higher wait on failures.
+  - "Long — 30 min (1800s)" — For complex code generation. Higher wait on failures.
   - "None" — No timeout. Wait indefinitely for each model.
 
 ### Step 3: Detect Available Models
