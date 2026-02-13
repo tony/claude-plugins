@@ -96,9 +96,8 @@ The storage root is resolved in this order:
 
 1. `$AI_AIP_ROOT` environment variable (if set)
 2. `$XDG_STATE_HOME/ai-aip` (if `$XDG_STATE_HOME` is set)
-3. `$HOME/.local/state/ai-aip` (Linux default)
-4. `~/Library/Application Support/ai-aip` (macOS, when neither `$AI_AIP_ROOT` nor `$XDG_STATE_HOME` is set)
-5. `~/.ai-aip` (final fallback)
+3. `~/Library/Application Support/ai-aip` (macOS, when `uname -s` = Darwin)
+4. `$HOME/.local/state/ai-aip` (Linux/other default)
 
 A `/tmp/ai-aip` symlink is created pointing to the resolved root for backward compatibility.
 
