@@ -523,9 +523,12 @@ For each pass from 2 to `pass_count`:
    git branch -D mm/gpt/<old-timestamp> 2>/dev/null
    ```
 
-4. **Discard Claude's changes** in the main tree:
+4. **Discard Claude's changes** in the main tree (tracked and untracked):
    ```bash
    git checkout -- .
+   ```
+   ```bash
+   git clean -fd
    ```
 
 5. **Create fresh worktrees** with new timestamps.
