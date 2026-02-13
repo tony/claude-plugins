@@ -12,7 +12,7 @@
   "plugins": [
     {
       "name": "multi-model",
-      "description": "Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, review, and synthesize the best of all models",
+      "description": "Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, architect, review, and synthesize the best of all models",
       "version": "0.0.1",
       "author": {
         "name": "Tony Narlock",
