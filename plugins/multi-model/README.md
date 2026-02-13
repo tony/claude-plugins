@@ -112,7 +112,7 @@ Format: `<slug>--<hash>` (e.g., `my-project--a1b2c3d4e5f6`)
 Session IDs combine a UTC timestamp, PID, and random bytes to prevent collisions:
 
 ```
-<YYYYMMDD-HHMMSSz>-<PID>-<4 hex chars>
+<YYYYMMDD-HHMMSSZ>-<PID>-<4 hex chars>
 ```
 
 Example: `20260210-143022Z-12345-a1b2`
