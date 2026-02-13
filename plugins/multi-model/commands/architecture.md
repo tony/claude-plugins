@@ -407,18 +407,18 @@ After capturing each diff, write it to the session directory:
 
 For each model that completed, snapshot its changed files into `$SESSION_DIR/pass-0001/files/<model>/` preserving repo-relative paths. Only new and modified files are snapshotted — deleted files appear in the diff only.
 
-For each changed file (from `git diff --name-only HEAD`):
+For each changed file (from `git diff --name-only --diff-filter=d HEAD`):
 
 **Claude** (main worktree):
 ```bash
-git diff --name-only HEAD
+git diff --name-only --diff-filter=d HEAD
 ```
 
 For each file in the list, copy it to `$SESSION_DIR/pass-0001/files/claude/<filepath>` using `mkdir -p` to create intermediate directories.
 
 **External models** (worktrees):
 ```bash
-git -C ../<repo-name>-mm-<model> diff --name-only HEAD
+git -C ../<repo-name>-mm-<model> diff --name-only --diff-filter=d HEAD
 ```
 
 For each file in the list, copy it from the worktree (`../<repo-name>-mm-<model>/<filepath>`) to `$SESSION_DIR/pass-0001/files/<model>/<filepath>` using `mkdir -p` to create intermediate directories.
