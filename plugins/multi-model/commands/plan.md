@@ -196,13 +196,7 @@ mkdir -p -m 700 "$SESSION_DIR/pass-0001/outputs" "$SESSION_DIR/pass-0001/stderr"
 
 ### Step 5: Write `repo.json` (if missing)
 
-Only on first session for this repo:
-
-```bash
-test -f "$AIP_ROOT/repos/$REPO_DIR/repo.json" || <write it>
-```
-
-Contents:
+If `$AIP_ROOT/repos/$REPO_DIR/repo.json` does not exist, write it with these contents:
 
 ```json
 {
