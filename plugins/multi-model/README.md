@@ -82,7 +82,7 @@ Default timeouts per command: ask (450s), plan (600s), prompt (600s), review (90
 Commands always prompt via `AskUserQuestion` for pass count, with trigger hints biasing the recommended option:
 
 1. **Pass count** (always asked) — choose single pass (1), multipass (2), or triple pass (3). If a trigger hint is present, the matching option is marked as recommended.
-2. **Timeout** (asked unless structured trigger present) — choose the default, quick (180s), long (900s), or no timeout. Skipped when `timeout:<seconds>` or `timeout:none` is provided.
+2. **Timeout** (asked unless structured trigger present) — choose the default, quick (180s), long (900–1800s, varies by command), or no timeout. Skipped when `timeout:<seconds>` or `timeout:none` is provided.
 
 In headless mode (`claude -p`), pass count uses the trigger hint value if present, otherwise defaults to 1. Timeout uses the parsed value if provided, otherwise the per-command default.
 
