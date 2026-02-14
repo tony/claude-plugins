@@ -66,9 +66,9 @@ This repo contains Claude Code plugins, commands, skills, hooks, and agents. Use
 - `ai(rules)` — AGENTS.md or other AI convention files
 
 When a change targets a specific named component, include it:
-- `ai(claude[skill/commit])` — the `commit` skill specifically
-- `ai(claude[hook/PreToolUse])` — a PreToolUse hook specifically
-- `ai(claude[command/review-pr])` — the `review-pr` command specifically
+- `ai(claude[skill{commit}])` — the `commit` skill specifically
+- `ai(claude[hook{PreToolUse}])` — a PreToolUse hook specifically
+- `ai(claude[command{review-pr}])` — the `review-pr` command specifically
 
 Examples:
 ```
