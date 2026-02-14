@@ -276,6 +276,9 @@ For each pass from 2 to `pass_count`:
    ```bash
    git checkout -- .
    ```
+
+   Remove untracked files created during the primary model's work:
+
    ```bash
    git clean -fd
    ```
