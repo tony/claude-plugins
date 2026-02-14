@@ -45,4 +45,4 @@ npx skills add tony/ai-workflow-plugins
 
 ## Design Philosophy
 
-All skills are language-agnostic — they discover project-specific tooling by reading AGENTS.md at runtime.
+All skills are language-agnostic — they discover project-specific tooling by reading AGENTS.md / CLAUDE.md at runtime.
