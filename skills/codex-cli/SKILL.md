@@ -1,6 +1,6 @@
 ---
 name: codex-cli
-description: Delegate a task to OpenAI's GPT via the Codex CLI. Use when the user explicitly asks to use Codex, GPT, or OpenAI for a task, or when you determine that GPT would provide better results for a specific task. Detects the codex binary, falls back to agent --model gpt-5.2 if unavailable.
+description: Delegate a task to OpenAI's GPT via the Codex CLI. Use when the user explicitly asks to use Codex, GPT, or OpenAI for a task, or when GPT would provide better results for a specific task. Detects the codex binary, falls back to agent --model gpt-5.2 if unavailable.
 ---
 
 # Codex CLI Skill

@@ -1,6 +1,6 @@
 ---
 name: cursor-cli
-description: Delegate a task to Cursor's agent CLI. Use when the user explicitly asks to use Cursor or the agent CLI for a task, or when you determine that Cursor's agent would provide better results for a specific task. Requires the agent binary — there is no fallback.
+description: Delegate a task to Cursor's agent CLI. Use when the user explicitly asks to use Cursor or the agent CLI for a task, or when Cursor's agent would provide better results for a specific task. Requires the agent binary — there is no fallback.
 ---
 
 # Cursor Agent CLI Skill

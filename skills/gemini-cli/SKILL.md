@@ -1,6 +1,6 @@
 ---
 name: gemini-cli
-description: Delegate a task to Google's Gemini via the gemini CLI. Use when the user explicitly asks to use Gemini or Google's model for a task, or when you determine that Gemini would provide better results for a specific task. Detects the gemini binary, falls back to agent --model gemini-3-pro if unavailable.
+description: Delegate a task to Google's Gemini via the gemini CLI. Use when the user explicitly asks to use Gemini or Google's model for a task, or when Gemini would provide better results for a specific task. Detects the gemini binary, falls back to agent --model gemini-3-pro if unavailable.
 ---
 
 # Gemini CLI Skill
