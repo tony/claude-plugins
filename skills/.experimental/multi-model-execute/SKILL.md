@@ -15,7 +15,7 @@ The task comes from the user's request in conversation. If no task is clear, ask
 
 **Goal**: Understand the project and prepare the task.
 
-1. **Read CLAUDE.md / AGENTS.md** if present — project conventions constrain all implementations.
+1. **Read AGENTS.md / CLAUDE.md** if present — project conventions constrain all implementations.
 
 2. **Determine trunk branch**:
    ```bash

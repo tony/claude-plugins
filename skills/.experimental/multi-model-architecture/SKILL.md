@@ -15,7 +15,7 @@ The architecture goal comes from the user's request in conversation. If no goal 
 
 **Goal**: Understand the project's existing architecture and conventions.
 
-1. **Read CLAUDE.md / AGENTS.md** if present — existing conventions constrain all outputs.
+1. **Read AGENTS.md / CLAUDE.md** if present — existing conventions constrain all outputs.
 
 2. **Scan for existing components**:
    - Skills (`skills/*/SKILL.md`)

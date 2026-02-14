@@ -15,7 +15,7 @@ The question comes from the user's request in conversation. If no question is cl
 
 **Goal**: Understand the project and prepare the question.
 
-1. **Read CLAUDE.md / AGENTS.md** if present — project conventions inform better answers.
+1. **Read AGENTS.md / CLAUDE.md** if present — project conventions inform better answers.
 
 2. **Determine trunk branch** (for questions about branch changes):
    ```bash

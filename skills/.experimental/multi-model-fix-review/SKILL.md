@@ -38,7 +38,7 @@ This skill does not invoke external models and therefore does not require model 
 
 4. **Track progress** through each finding
 
-5. **Read CLAUDE.md / AGENTS.md** for project conventions that apply to the fixes
+5. **Read AGENTS.md / CLAUDE.md** for project conventions that apply to the fixes
 
 ---
 
