@@ -1,5 +1,5 @@
 ---
-name: ai-workflow-skills
+name: ai-workflow-plugins-vercel
 description: Collection of language-agnostic AI workflow skills for coding agents. Includes git commit, changelog, rebase, TDD, multi-model collaboration, and CLI delegation skills. Use when browsing available skills or learning what this repository offers.
 ---
 
