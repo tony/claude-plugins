@@ -29,7 +29,7 @@ Perform a disciplined TDD bug-fix loop. Follow this workflow precisely for every
    - The source file with the suspected bug
    - Any existing fixtures that can help reproduce the scenario
 5. Read the identified files to understand current behavior
-6. Summarize your understanding of the bug and confirm with user before proceeding
+6. Summarize the understanding of the bug and confirm with user before proceeding
 
 ---
 
