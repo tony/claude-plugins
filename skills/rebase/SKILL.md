@@ -11,20 +11,28 @@ Gather the following context before proceeding:
 
 Run `git branch --show-current` to determine the current branch.
 
-Run `git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "master"` to detect the trunk branch.
+Run `git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}'` to detect the trunk branch.
 
 Run `git remote -v 2>/dev/null | head -2` to check available remote refs.
 
-Run the following to see commits on the current branch not on trunk (substitute the detected trunk branch name):
+Detect the trunk branch name and store it for subsequent commands:
 
 ```
-TRUNK=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "master"); git log --oneline "origin/${TRUNK}..HEAD" 2>/dev/null || echo "(could not determine commits ahead)"
+TRUNK=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
+```
+
+If the command returned empty, try both `origin/main` and `origin/master` to see which exists.
+
+Run the following to see commits on the current branch not on trunk:
+
+```
+git log --oneline "origin/${TRUNK}..HEAD" 2>/dev/null || echo "(could not determine commits ahead)"
 ```
 
 Run the following to see a diff summary from trunk:
 
 ```
-TRUNK=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "master"); git diff --stat "origin/${TRUNK}" 2>/dev/null || echo "(could not diff against trunk)"
+git diff --stat "origin/${TRUNK}" 2>/dev/null || echo "(could not diff against trunk)"
 ```
 
 ## Procedure
