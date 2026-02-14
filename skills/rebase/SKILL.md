@@ -27,7 +27,7 @@ Run the following to see a diff summary from trunk:
 TRUNK=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "master"); git diff --stat "origin/${TRUNK}" 2>/dev/null || echo "(could not diff against trunk)"
 ```
 
-## Your Task
+## Procedure
 
 Rebase the current branch onto the remote trunk branch. Follow these steps carefully, handling each phase before moving to the next.
 
