@@ -47,7 +47,7 @@ Determine the trunk branch name from the context above (the "Trunk branch" value
 2. Run `git diff origin/${TRUNK}...HEAD --stat` to see what files the current branch modifies.
 3. Run `git diff origin/${TRUNK}...HEAD` to see the full diff of changes on this branch.
 4. Run `git log --oneline origin/${TRUNK}..HEAD` to see commits that will be rebased.
-5. Run `git diff origin/${TRUNK} -- $(git diff --name-only origin/${TRUNK}...HEAD)` to check if trunk has also modified any of the same files — these are potential conflict zones.
+5. Run `git diff --name-only -z "origin/${TRUNK}...HEAD" | xargs -0 git diff "origin/${TRUNK}" --` to check if trunk has also modified any of the same files — these are potential conflict zones.
 
 Report a brief summary of:
 - How many commits will be rebased
