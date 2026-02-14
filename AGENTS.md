@@ -124,6 +124,8 @@ as hardcoded instructions.
 ### Accessible Code Blocks
 
 - **One command per code block** — never combine multiple commands in a single
-  fenced block; use separate blocks with explanatory text between them
+  fenced block; use separate blocks with explanatory text between them.
+  Shell compound commands (`if`/`elif`/`else`/`fi`, `for`/`done`, `while`/`done`,
+  `case`/`esac`) and pipelines count as one command per block
 - **No comments inside code blocks** — explanatory text goes outside as
   regular markdown, not as `#` comments inside the fence
