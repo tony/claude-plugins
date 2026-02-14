@@ -31,6 +31,21 @@ skills for developer experience efficiency.
 npx openskills install tony/ai-workflow-plugins
 ```
 
+## Prerequisites
+
+- **git** — required for all version control skills (commit, changelog, rebase, tdd-fix)
+- **gh** — GitHub CLI, used by changelog for PR context
+
+For multi-model and CLI delegation skills, install one or more external AI CLIs:
+
+| CLI | Model | Install |
+|-----|-------|---------|
+| `gemini` | Google Gemini | [Gemini CLI](https://github.com/google-gemini/gemini-cli) |
+| `codex` | OpenAI GPT | [Codex CLI](https://github.com/openai/codex) |
+| `agent` | Cursor (also fallback for gemini/codex) | Cursor CLI |
+
+Skills detect available CLIs at runtime and report which models will participate.
+
 ## Design Philosophy
 
 Every skill in this repository is **language-agnostic**. Skills do not hardcode
