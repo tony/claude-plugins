@@ -45,7 +45,7 @@ If no timeout command is available, omit the prefix entirely.
 ## Step 3: Create Temp Files
 
 ```bash
-mktemp $PROMPT_FILE
+PROMPT_FILE=$(mktemp /tmp/mc-prompt-XXXXXX.txt)
 ```
 
 Store the returned path as `PROMPT_FILE`.
