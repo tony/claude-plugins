@@ -337,7 +337,7 @@ git branch -D mm/gpt/<timestamp> 2>/dev/null
 Only pop if the named stash exists:
 
 ```bash
-git stash list | grep -q "mm-architecture: user-changes stash" && git stash pop || true
+if git stash list | grep -q "mm-architecture: user-changes stash"; then git stash pop; fi
 ```
 
 ---
