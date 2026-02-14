@@ -51,7 +51,7 @@ PROMPT_FILE=$(mktemp /tmp/mc-prompt-XXXXXX.txt)
 Store the returned path as `PROMPT_FILE`.
 
 ```bash
-mktemp /tmp/mc-stderr-XXXXXX.txt
+STDERR_FILE=$(mktemp /tmp/mc-stderr-XXXXXX.txt)
 ```
 
 Store the returned path as `STDERR_FILE`. Write the prompt content to `$PROMPT_FILE`.
