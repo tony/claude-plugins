@@ -1,6 +1,6 @@
 ---
 name: gpt-cli
-description: Alias for the codex-cli skill. Use as an alternative entry point for running prompts through OpenAI GPT.
+description: Alias for the codex-cli skill. Use when the user asks to use GPT or OpenAI as an alternative to codex-cli.
 ---
 
 # GPT CLI Skill
