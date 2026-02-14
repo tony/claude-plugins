@@ -49,7 +49,7 @@ npx skills add tony/ai-workflow-plugins
 Install a specific skill:
 
 ```bash
-npx skills add tony/ai-workflow-plugins --skill commit -a claude-code -y
+npx skills add tony/ai-workflow-plugins --skill commit
 ```
 
 ## Design Philosophy
