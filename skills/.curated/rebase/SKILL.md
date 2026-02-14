@@ -11,7 +11,7 @@ Gather the following information before proceeding:
 
 Run `git branch --show-current` to determine the current branch.
 
-Run `git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}' || echo "master"` to determine the trunk branch.
+Run `git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}'` to determine the trunk branch.
 
 Run `git remote -v 2>/dev/null | head -2` to see available remote refs.
 
@@ -20,6 +20,8 @@ Detect the trunk branch name:
 ```bash
 TRUNK=$(git remote show origin 2>/dev/null | grep 'HEAD branch' | awk '{print $NF}')
 ```
+
+If the command returned empty, try both `origin/main` and `origin/master` to see which exists.
 
 Run the following to see commits on the current branch not on trunk:
 
