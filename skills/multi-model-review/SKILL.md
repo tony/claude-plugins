@@ -57,7 +57,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to p
 > Perform a thorough code review of the changes on this branch compared to origin/<trunk>.
 >
 > Run `git diff origin/<trunk>...HEAD` to see all changes.
-> Read the CLAUDE.md or AGENTS.md file at the repo root for project conventions.
+> Read the AGENTS.md / CLAUDE.md file at the repo root for project conventions.
 >
 > Review for:
 > 1. **Bugs and logic errors** — incorrect behavior, edge cases, off-by-one errors
