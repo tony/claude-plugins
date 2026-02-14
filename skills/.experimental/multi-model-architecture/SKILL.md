@@ -346,9 +346,32 @@ cd ../$REPO_SLUG-mm-gpt && <timeout_cmd> <timeout_seconds> agent -p -f --model g
 
 ## Phase 5: Analyze All Architectures
 
-### Step 1: Gather Diffs and Snapshots
+### Step 1: Gather Diffs
 
-Capture diffs and snapshot changed files for each model into `$SESSION_DIR/pass-0001/diffs/` and `$SESSION_DIR/pass-0001/files/`.
+For each model that completed, examine the changes:
+
+**Primary model** (main worktree):
+```bash
+git diff HEAD
+```
+
+**External models** (worktrees):
+```bash
+git -C ../$REPO_SLUG-mm-<model> diff HEAD
+```
+
+After capturing each diff, write it to the session directory:
+- `$SESSION_DIR/pass-0001/diffs/primary.diff`
+- `$SESSION_DIR/pass-0001/diffs/gemini.diff`
+- `$SESSION_DIR/pass-0001/diffs/gpt.diff`
+
+### Step 1b: Snapshot Changed Files
+
+For each model that completed, snapshot its changed files into `$SESSION_DIR/pass-0001/files/<model>/` preserving repo-relative paths. Only new and modified files are snapshotted — deleted files appear in the diff only.
+
+For each changed file (from `git diff --name-only --diff-filter=d HEAD`):
+
+Copy each file to `$SESSION_DIR/pass-0001/files/<model>/<filepath>` using `mkdir -p` to create intermediate directories.
 
 ### Step 2: Evaluate Each Architecture
 
