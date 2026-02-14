@@ -61,7 +61,7 @@ Report a brief summary of:
 
 Run:
 ```
-git pull --rebase origin ${TRUNK} --autostash
+git pull --rebase origin "${TRUNK}" --autostash
 ```
 
 If the rebase completes cleanly (exit code 0), skip to Phase 5.
