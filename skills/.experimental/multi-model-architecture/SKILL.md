@@ -153,17 +153,114 @@ fi
 ln -sfn "$AIP_ROOT" /tmp/ai-aip 2>/dev/null || true
 ```
 
-### Step 2–8: Session setup
+### Step 2: Compute repo identity
 
-Compute repo identity (`REPO_SLUG`, `REPO_ID`, `REPO_DIR`), generate session ID, create session directory at `$AIP_ROOT/repos/$REPO_DIR/sessions/architecture/$SESSION_ID` with subdirectories for outputs, stderr, diffs, and files.
+```bash
+REPO_TOPLEVEL="$(git rev-parse --show-toplevel)"
+```
 
-Stash user changes if the working tree has uncommitted changes:
+```bash
+REPO_SLUG="$(basename "$REPO_TOPLEVEL" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]/-/g')"
+```
+
+```bash
+REPO_ORIGIN="$(git remote get-url origin 2>/dev/null || true)"
+```
+
+```bash
+if [ -n "$REPO_ORIGIN" ]; then
+  REPO_KEY="${REPO_ORIGIN}|${REPO_SLUG}"
+else
+  REPO_KEY="$REPO_TOPLEVEL"
+fi
+```
+
+```bash
+if command -v sha256sum >/dev/null 2>&1; then
+  REPO_ID="$(printf '%s' "$REPO_KEY" | sha256sum | cut -c1-12)"
+else
+  REPO_ID="$(printf '%s' "$REPO_KEY" | shasum -a 256 | cut -c1-12)"
+fi
+```
+
+```bash
+REPO_DIR="${REPO_SLUG}--${REPO_ID}"
+```
+
+### Step 3: Generate session ID
+
+```bash
+SESSION_ID="$(date -u '+%Y%m%d-%H%M%SZ')-$$-$(head -c2 /dev/urandom | od -An -tx1 | tr -d ' ')"
+```
+
+### Step 4: Create session directory
+
+```bash
+SESSION_DIR="$AIP_ROOT/repos/$REPO_DIR/sessions/architecture/$SESSION_ID"
+```
+
+Create the session directory tree:
+
+```bash
+mkdir -p -m 700 "$SESSION_DIR/pass-0001/outputs" "$SESSION_DIR/pass-0001/stderr" "$SESSION_DIR/pass-0001/diffs" "$SESSION_DIR/pass-0001/files"
+```
+
+### Step 4b: Stash user changes
+
+If the working tree has uncommitted changes, stash them before any model runs:
 
 ```bash
 git stash --include-untracked -m "mm-architecture: user-changes stash"
 ```
 
-Write `repo.json` (if missing), `session.json` (atomic replace), append `events.jsonl`, and write `metadata.md`.
+### Step 5: Write `repo.json` (if missing)
+
+If `$AIP_ROOT/repos/$REPO_DIR/repo.json` does not exist, write it with these contents:
+
+```json
+{
+  "schema_version": 1,
+  "slug": "<REPO_SLUG>",
+  "id": "<REPO_ID>",
+  "toplevel": "<REPO_TOPLEVEL>",
+  "origin": "<REPO_ORIGIN or null>"
+}
+```
+
+### Step 6: Write `session.json` (atomic replace)
+
+Write to `$SESSION_DIR/session.json.tmp`, then `mv session.json.tmp session.json`:
+
+```json
+{
+  "schema_version": 1,
+  "session_id": "<SESSION_ID>",
+  "command": "architecture",
+  "status": "in_progress",
+  "branch": "<current branch>",
+  "ref": "<short SHA>",
+  "models": ["claude", "..."],
+  "completed_passes": 0,
+  "prompt_summary": "<first 120 chars of architecture goal>",
+  "created_at": "<ISO 8601 UTC>",
+  "updated_at": "<ISO 8601 UTC>"
+}
+```
+
+### Step 7: Append `events.jsonl`
+
+Append one event line to `$SESSION_DIR/events.jsonl`:
+
+```json
+{"event":"session_start","timestamp":"<ISO 8601 UTC>","command":"architecture","models":["claude","..."]}
+```
+
+### Step 8: Write `metadata.md`
+
+Write to `$SESSION_DIR/metadata.md` containing:
+- Command: `architecture`, start time, configured pass count
+- Models detected, timeout setting
+- Git branch (`git branch --show-current`), commit ref (`git rev-parse --short HEAD`)
 
 Store `$SESSION_DIR` for use in all subsequent phases.
 
