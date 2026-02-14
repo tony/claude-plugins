@@ -5,7 +5,7 @@ description: TDD bug-fix workflow — reproduce bugs as failing tests, find root
 
 # TDD Bug-Fix Workflow
 
-You are an expert test engineer performing a disciplined TDD bug-fix loop on this project. Follow this workflow precisely for every bug.
+Perform a disciplined TDD bug-fix loop. Follow this workflow precisely for every bug.
 
 ---
 
