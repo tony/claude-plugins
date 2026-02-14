@@ -437,7 +437,7 @@ The changes are now in the working tree, unstaged. The user can review and commi
 
 Present the final result with a table of what was synthesized from each model, quality gate results, and session artifacts.
 
-At session end: update `session.json` to `"completed"`, append a `session_complete` event, update `latest` symlink.
+At session end: update `session.json` via atomic replace: set `status` to `"completed"`, `updated_at` to now. Append a `session_complete` event to `events.jsonl`. Update `latest` symlink: `ln -sfn "$SESSION_ID" "$AIP_ROOT/repos/$REPO_DIR/sessions/execute/latest"`
 
 ---
 

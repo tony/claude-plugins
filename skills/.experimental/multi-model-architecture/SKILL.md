@@ -346,7 +346,7 @@ git stash list | grep -q "mm-architecture: user-changes stash" && git stash pop 
 
 Present the final result with a table of artifacts produced, source models, and evaluation summary.
 
-At session end: update `session.json` to `"completed"`, append a `session_complete` event, update `latest` symlink.
+At session end: update `session.json` via atomic replace: set `status` to `"completed"`, `updated_at` to now. Append a `session_complete` event to `events.jsonl`. Update `latest` symlink: `ln -sfn "$SESSION_ID" "$AIP_ROOT/repos/$REPO_DIR/sessions/architecture/latest"`
 
 ---
 
