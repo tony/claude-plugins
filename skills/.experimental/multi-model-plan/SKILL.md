@@ -335,7 +335,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to c
 
 After each model completes, persist its output to the session directory:
 
-- **Primary model**: Write the response to `$SESSION_DIR/pass-0001/outputs/claude.md`
+- **Primary model**: Write the response to `$SESSION_DIR/pass-0001/outputs/primary.md`
 - **Gemini**: Write Gemini's stdout to `$SESSION_DIR/pass-0001/outputs/gemini.md`
 - **GPT**: Write GPT's stdout to `$SESSION_DIR/pass-0001/outputs/gpt.md`
 

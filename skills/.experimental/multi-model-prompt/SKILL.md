@@ -358,7 +358,7 @@ cd ../$REPO_SLUG-mm-gpt && <timeout_cmd> <timeout_seconds> agent -p -f --model g
 
 After each model completes, persist its output to the session directory:
 
-- **Primary model**: Write the response to `$SESSION_DIR/pass-0001/outputs/claude.md`
+- **Primary model**: Write the response to `$SESSION_DIR/pass-0001/outputs/primary.md`
 - **Gemini**: Write Gemini's stdout to `$SESSION_DIR/pass-0001/outputs/gemini.md`
 - **GPT**: Write GPT's stdout to `$SESSION_DIR/pass-0001/outputs/gpt.md`
 
@@ -394,7 +394,7 @@ git -C ../$REPO_SLUG-mm-<model> diff HEAD
 ```
 
 After capturing each diff, write it to the session directory:
-- `$SESSION_DIR/pass-0001/diffs/claude.diff`
+- `$SESSION_DIR/pass-0001/diffs/primary.diff`
 - `$SESSION_DIR/pass-0001/diffs/gemini.diff`
 - `$SESSION_DIR/pass-0001/diffs/gpt.diff`
 
