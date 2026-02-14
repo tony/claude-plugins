@@ -1,63 +1,39 @@
 # ai-workflow-plugins
 
-A third-party [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md)
-providing language-agnostic AI / agentic workflow plugins for DX efficiency.
-
-> **Warning:** Review plugins before installing. Anthropic does not control plugin
-> contents and cannot verify they work as intended.
+An [OpenSkills](https://openskills.dev) repository providing language-agnostic AI workflow
+skills for developer experience efficiency.
 
 **Repository:** [tony/ai-workflow-plugins](https://github.com/tony/ai-workflow-plugins)
 
-## Plugins
+## Skills
 
-| Plugin | Category | Description |
-|--------|----------|-------------|
-| [commit](plugins/commit/) | Development | Create git commits following project conventions with format enforcement and safety checks |
-| [multi-model](plugins/multi-model/) | Development | Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, review, and synthesize |
-| [rebase](plugins/rebase/) | Development | Automated rebase onto trunk with conflict prediction, resolution, and quality gate verification |
-| [changelog](plugins/changelog/) | Productivity | Generate categorized changelog entries from branch commits and PR context |
-| [tdd](plugins/tdd/) | Testing | TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify |
-| [model-cli](plugins/model-cli/) | Development | Run prompts through individual AI CLIs — codex/GPT, gemini, and cursor/agent with fallback support |
+| Skill | Category | Description |
+|-------|----------|-------------|
+| [commit](skills/commit/) | Development | Create git commits following project conventions with format enforcement and safety checks |
+| [changelog](skills/changelog/) | Productivity | Generate categorized changelog entries from branch commits and PR context |
+| [rebase](skills/rebase/) | Development | Rebase onto trunk with conflict prediction, resolution, and quality gate verification |
+| [tdd-fix](skills/tdd-fix/) | Testing | TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify |
+| [codex-cli](skills/codex-cli/) | Development | Delegate a task to OpenAI GPT via the Codex CLI with automatic fallback |
+| [gemini-cli](skills/gemini-cli/) | Development | Delegate a task to Google Gemini via the gemini CLI with automatic fallback |
+| [cursor-cli](skills/cursor-cli/) | Development | Delegate a task to Cursor's agent CLI |
+| [gpt-cli](skills/gpt-cli/) | Development | Alias for codex-cli |
+| [multi-model-ask](skills/multi-model-ask/) | Development | Ask all models a question in parallel, synthesize the best answer |
+| [multi-model-plan](skills/multi-model-plan/) | Development | Get plans from all models, synthesize the best plan |
+| [multi-model-prompt](skills/multi-model-prompt/) | Development | Run a prompt in isolated worktrees per model, pick the best implementation |
+| [multi-model-execute](skills/multi-model-execute/) | Development | Run a task in isolated worktrees per model, synthesize the best parts |
+| [multi-model-architecture](skills/multi-model-architecture/) | Development | Generate project scaffolding from all models, synthesize the best architecture |
+| [multi-model-review](skills/multi-model-review/) | Development | Run code review with all models, produce a consensus-weighted report |
+| [multi-model-fix-review](skills/multi-model-fix-review/) | Development | Fix multi-model review findings as atomic commits with test coverage |
 
 ## Installation
 
-Add the marketplace:
-
 ```console
-/plugin marketplace add tony/ai-workflow-plugins
-```
-
-You can also browse available plugins with `/plugin > Discover`.
-
-Then install any plugin:
-
-```console
-/plugin install commit@ai-workflow-plugins
-```
-
-```console
-/plugin install multi-model@ai-workflow-plugins
-```
-
-```console
-/plugin install rebase@ai-workflow-plugins
-```
-
-```console
-/plugin install changelog@ai-workflow-plugins
-```
-
-```console
-/plugin install tdd@ai-workflow-plugins
-```
-
-```console
-/plugin install model-cli@ai-workflow-plugins
+npx openskills install tony/ai-workflow-plugins
 ```
 
 ## Design Philosophy
 
-Every plugin in this repository is **language-agnostic**. Commands do not hardcode
+Every skill in this repository is **language-agnostic**. Skills do not hardcode
 language-specific tools like `pytest`, `jest`, `cargo test`, or `ruff`. Instead, they
 reference the project's own conventions by reading `AGENTS.md` or `CLAUDE.md` at
 runtime to discover:
@@ -68,78 +44,8 @@ runtime to discover:
 - What commit message format to use
 - What test patterns to follow
 
-This means the same plugin works whether your project uses Python, TypeScript, Rust, Go,
+This means the same skill works whether your project uses Python, TypeScript, Rust, Go,
 or any other language.
-
-## Development
-
-Scripts use [uv](https://docs.astral.sh/uv/) to manage Python dependencies.
-
-Install uv:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-or:
-
-```bash
-wget -qO- https://astral.sh/uv/install.sh | sh
-```
-
-See [uv installation docs](https://docs.astral.sh/uv/getting-started/installation/) for
-other methods.
-
-### Lint and validate
-
-```bash
-uv run ./scripts/marketplace.py lint
-```
-
-### Sync marketplace manifest with plugin directories
-
-Dry-run:
-
-```bash
-uv run ./scripts/marketplace.py sync
-```
-
-Write changes to marketplace.json:
-
-```bash
-uv run ./scripts/marketplace.py sync --write
-```
-
-### Check for outdated entries
-
-```bash
-uv run ./scripts/marketplace.py check-outdated
-```
-
-### Code quality for scripts
-
-Lint:
-
-```bash
-uv run ruff check ./scripts/
-```
-
-Format check:
-
-```bash
-uv run ruff format --check ./scripts/
-```
-
-Type check:
-
-```bash
-uv run basedpyright ./scripts/
-```
-
-## Documentation
-
-See the [official Claude Code plugin docs](https://code.claude.com/docs/en/plugins) for
-authoring guides, component schemas, and marketplace publishing.
 
 ## License
 
