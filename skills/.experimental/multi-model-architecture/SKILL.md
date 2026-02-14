@@ -314,7 +314,23 @@ Validate architecture artifacts: verify YAML frontmatter, check tool references,
 
 ### Step 5: Cleanup Worktrees
 
-Remove all multi-model worktrees and branches.
+Remove all multi-model worktrees and branches:
+
+```bash
+git worktree remove ../$REPO_SLUG-mm-gemini --force 2>/dev/null
+```
+
+```bash
+git worktree remove ../$REPO_SLUG-mm-gpt --force 2>/dev/null
+```
+
+```bash
+git branch -D mm/gemini/<timestamp> 2>/dev/null
+```
+
+```bash
+git branch -D mm/gpt/<timestamp> 2>/dev/null
+```
 
 ### Step 6: Restore Stashed Changes
 
