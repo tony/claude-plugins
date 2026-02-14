@@ -36,7 +36,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 
 ### Claude Answer (sub-agent)
 
-Launch a sub-agent to answer the question:
+Delegate to a sub-agent (or execute inline if sub-agents are not supported) to answer the question:
 
 **Prompt for the Claude agent**:
 > Answer the following question about this codebase. Read any relevant files to give a thorough, accurate answer. Read CLAUDE.md/AGENTS.md for project conventions.

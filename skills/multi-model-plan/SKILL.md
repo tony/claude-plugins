@@ -48,7 +48,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 
 ### Claude Plan (sub-agent)
 
-Launch a sub-agent to create Claude's plan:
+Delegate to a sub-agent (or execute inline if sub-agents are not supported) to create the primary model's plan:
 
 **Prompt for the Claude planning agent**:
 > Create a detailed implementation plan for the following task. Read the codebase to understand the existing architecture, patterns, and conventions. Read CLAUDE.md/AGENTS.md for project standards.

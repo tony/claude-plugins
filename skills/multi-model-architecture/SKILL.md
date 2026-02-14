@@ -88,7 +88,7 @@ The architecture prompt should include:
 
 ### Claude Implementation (main worktree)
 
-Launch a sub-agent to generate artifacts in the main working tree.
+Delegate to a sub-agent (or execute inline if sub-agents are not supported) to generate artifacts in the main working tree.
 
 ### Gemini Implementation (worktree)
 

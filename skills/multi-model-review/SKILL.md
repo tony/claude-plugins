@@ -45,7 +45,7 @@ Write the review prompt to `$SESSION_DIR/pass-0001/prompt.md`.
 
 ### Claude Review (sub-agent)
 
-Launch a sub-agent to perform Claude's own code review:
+Delegate to a sub-agent (or execute inline if sub-agents are not supported) to perform the primary model's code review:
 
 **Prompt for the Claude review agent**:
 > Perform a thorough code review of the changes on this branch compared to origin/<trunk>.

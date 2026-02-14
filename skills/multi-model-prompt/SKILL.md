@@ -74,7 +74,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 
 ### Claude Implementation (main worktree)
 
-Launch a sub-agent to implement in the main working tree:
+Delegate to a sub-agent (or execute inline if sub-agents are not supported) to implement in the main working tree:
 
 **Prompt for the Claude agent**:
 > Implement the following task in this codebase. Read CLAUDE.md/AGENTS.md for project conventions and follow them strictly.
