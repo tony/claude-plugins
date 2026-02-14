@@ -61,7 +61,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to c
 >
 > Task: <task description>
 >
-> Your plan must include:
+> The plan must include:
 > 1. **Files to create or modify** — list every file with what changes are needed
 > 2. **Implementation sequence** — ordered steps with dependencies between them
 > 3. **Architecture decisions** — justify key choices with reference to existing patterns
