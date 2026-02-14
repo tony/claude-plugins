@@ -1,63 +1,60 @@
 # ai-workflow-plugins
 
-A third-party [Claude Code plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces.md)
-providing language-agnostic AI / agentic workflow plugins for DX efficiency.
-
-> **Warning:** Review plugins before installing. Anthropic does not control plugin
-> contents and cannot verify they work as intended.
+A Vercel Skills repository providing language-agnostic AI workflow skills for 40+ coding agents.
 
 **Repository:** [tony/ai-workflow-plugins](https://github.com/tony/ai-workflow-plugins)
 
-## Plugins
+## Skills
 
-| Plugin | Category | Description |
-|--------|----------|-------------|
-| [commit](plugins/commit/) | Development | Create git commits following project conventions with format enforcement and safety checks |
-| [multi-model](plugins/multi-model/) | Development | Run prompts across Claude, Gemini, and GPT in parallel — plan, execute, review, and synthesize |
-| [rebase](plugins/rebase/) | Development | Automated rebase onto trunk with conflict prediction, resolution, and quality gate verification |
-| [changelog](plugins/changelog/) | Productivity | Generate categorized changelog entries from branch commits and PR context |
-| [tdd](plugins/tdd/) | Testing | TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify |
-| [model-cli](plugins/model-cli/) | Development | Run prompts through individual AI CLIs — codex/GPT, gemini, and cursor/agent with fallback support |
+### Curated (stable, standalone workflows)
+
+| Skill | Directory | Description |
+|-------|-----------|-------------|
+| commit | `.curated/commit` | Create git commits following project conventions with format enforcement and safety checks |
+| changelog | `.curated/changelog` | Generate categorized changelog entries from branch commits and PR context |
+| rebase | `.curated/rebase` | Rebase onto trunk with conflict prediction, resolution, and quality gate verification |
+| tdd-fix | `.curated/tdd-fix` | TDD bug-fix workflow — reproduce bugs as failing tests, find root cause, fix, and verify |
+
+### Experimental (advanced, external tool dependencies)
+
+#### Multi-Model Collaboration
+
+| Skill | Directory | Description |
+|-------|-----------|-------------|
+| multi-model-ask | `.experimental/multi-model-ask` | Ask all models a question in parallel, synthesize best answer |
+| multi-model-plan | `.experimental/multi-model-plan` | Get implementation plans from all models, synthesize best plan |
+| multi-model-prompt | `.experimental/multi-model-prompt` | Run a prompt in isolated worktrees per model, pick the best |
+| multi-model-execute | `.experimental/multi-model-execute` | Synthesize the best parts from all model implementations |
+| multi-model-architecture | `.experimental/multi-model-architecture` | Generate project scaffolding from all models, synthesize best architecture |
+| multi-model-review | `.experimental/multi-model-review` | Consensus-weighted multi-model code review |
+| multi-model-fix-review | `.experimental/multi-model-fix-review` | Fix review findings as atomic commits with test coverage |
+
+#### CLI Delegation
+
+| Skill | Directory | Description |
+|-------|-----------|-------------|
+| codex-cli | `.experimental/codex-cli` | Delegate to OpenAI GPT via Codex CLI with automatic fallback |
+| gemini-cli | `.experimental/gemini-cli` | Delegate to Google Gemini CLI with automatic fallback |
+| cursor-cli | `.experimental/cursor-cli` | Delegate to Cursor's agent CLI directly |
+| gpt-cli | `.experimental/gpt-cli` | Alias for codex-cli |
 
 ## Installation
 
-Add the marketplace:
+Install all skills:
 
-```console
-/plugin marketplace add tony/ai-workflow-plugins
+```bash
+npx skills add tony/ai-workflow-plugins
 ```
 
-You can also browse available plugins with `/plugin > Discover`.
+Install a specific skill:
 
-Then install any plugin:
-
-```console
-/plugin install commit@ai-workflow-plugins
-```
-
-```console
-/plugin install multi-model@ai-workflow-plugins
-```
-
-```console
-/plugin install rebase@ai-workflow-plugins
-```
-
-```console
-/plugin install changelog@ai-workflow-plugins
-```
-
-```console
-/plugin install tdd@ai-workflow-plugins
-```
-
-```console
-/plugin install model-cli@ai-workflow-plugins
+```bash
+npx skills add tony/ai-workflow-plugins --skill commit -a claude-code -y
 ```
 
 ## Design Philosophy
 
-Every plugin in this repository is **language-agnostic**. Commands do not hardcode
+Every skill in this repository is **language-agnostic**. Skills do not hardcode
 language-specific tools like `pytest`, `jest`, `cargo test`, or `ruff`. Instead, they
 reference the project's own conventions by reading `AGENTS.md` or `CLAUDE.md` at
 runtime to discover:
@@ -68,78 +65,8 @@ runtime to discover:
 - What commit message format to use
 - What test patterns to follow
 
-This means the same plugin works whether your project uses Python, TypeScript, Rust, Go,
+This means the same skill works whether your project uses Python, TypeScript, Rust, Go,
 or any other language.
-
-## Development
-
-Scripts use [uv](https://docs.astral.sh/uv/) to manage Python dependencies.
-
-Install uv:
-
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-or:
-
-```bash
-wget -qO- https://astral.sh/uv/install.sh | sh
-```
-
-See [uv installation docs](https://docs.astral.sh/uv/getting-started/installation/) for
-other methods.
-
-### Lint and validate
-
-```bash
-uv run ./scripts/marketplace.py lint
-```
-
-### Sync marketplace manifest with plugin directories
-
-Dry-run:
-
-```bash
-uv run ./scripts/marketplace.py sync
-```
-
-Write changes to marketplace.json:
-
-```bash
-uv run ./scripts/marketplace.py sync --write
-```
-
-### Check for outdated entries
-
-```bash
-uv run ./scripts/marketplace.py check-outdated
-```
-
-### Code quality for scripts
-
-Lint:
-
-```bash
-uv run ruff check ./scripts/
-```
-
-Format check:
-
-```bash
-uv run ruff format --check ./scripts/
-```
-
-Type check:
-
-```bash
-uv run basedpyright ./scripts/
-```
-
-## Documentation
-
-See the [official Claude Code plugin docs](https://code.claude.com/docs/en/plugins) for
-authoring guides, component schemas, and marketplace publishing.
 
 ## License
 
