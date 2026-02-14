@@ -37,7 +37,7 @@ Perform a disciplined TDD bug-fix loop. Follow this workflow precisely for every
 
 **Goal**: Create a test that reproduces the bug and is expected to fail.
 
-**CRITICAL**: Follow the project's test conventions from AGENTS.md/CLAUDE.md strictly. Read existing test files to understand patterns before writing any test code.
+**CRITICAL**: Follow the project's test conventions from AGENTS.md / CLAUDE.md strictly. Read existing test files to understand patterns before writing any test code.
 
 ### xfail mechanism by framework
 
@@ -65,8 +65,8 @@ Use the appropriate "expected failure" mechanism for the project's test framewor
    <project's test command> <test_file>::<test_name>
    ```
 5. Run the full test file to ensure no other tests broke
-6. Run the project's quality gates (linter, formatter, type checker) as defined in AGENTS.md/CLAUDE.md
-7. **Commit the failing test** using the project's commit message format from AGENTS.md/CLAUDE.md. The commit should indicate this is an xfail test for a known bug.
+6. Run the project's quality gates (linter, formatter, type checker) as defined in AGENTS.md / CLAUDE.md
+7. **Commit the failing test** using the project's commit message format from AGENTS.md / CLAUDE.md. The commit should indicate this is an xfail test for a known bug.
 
 ---
 
@@ -94,14 +94,14 @@ Use the appropriate "expected failure" mechanism for the project's test framewor
 - Minimal change — only fix what's broken
 - Don't refactor surrounding code
 - Don't add features beyond the fix
-- Follow existing code patterns and style from AGENTS.md/CLAUDE.md
+- Follow existing code patterns and style from AGENTS.md / CLAUDE.md
 
 **Actions**:
 1. Apply the fix to the source code
 2. Remove any debug instrumentation added in Phase 3
 3. Run the failing test — it should now trigger the xfail mechanism's "unexpected pass" behavior (e.g., XPASS in pytest), confirming the fix works
-4. Run the project's quality gates as defined in AGENTS.md/CLAUDE.md
-5. **Commit the fix** using the project's commit message format from AGENTS.md/CLAUDE.md. Include the root cause explanation.
+4. Run the project's quality gates as defined in AGENTS.md / CLAUDE.md
+5. **Commit the fix** using the project's commit message format from AGENTS.md / CLAUDE.md. Include the root cause explanation.
 
 ---
 
@@ -114,7 +114,7 @@ Use the appropriate "expected failure" mechanism for the project's test framewor
 2. Update the test comment/docstring to describe it as a regression test (not a bug report)
 3. Run the test — it MUST pass
 4. Run the full test suite for the affected file/module
-5. Run all project quality gates as defined in AGENTS.md/CLAUDE.md
+5. Run all project quality gates as defined in AGENTS.md / CLAUDE.md
 6. If ALL checks pass, **commit** using the project's commit message format. The commit should indicate the xfail is removed because the fix is verified.
 
 ---
@@ -167,7 +167,7 @@ When the bug involves both this project and a dependency:
 
 ## Quality Gates (every commit must pass)
 
-Before EVERY commit, run the project's quality gates as defined in AGENTS.md/CLAUDE.md. Common gates include:
+Before EVERY commit, run the project's quality gates as defined in AGENTS.md / CLAUDE.md. Common gates include:
 
 | Gate | Example commands |
 |------|-----------------|
@@ -182,7 +182,7 @@ ALL gates must pass. A commit with failing tests or lint errors is not acceptabl
 
 ## Commit Message Format
 
-Use the project's commit message format from AGENTS.md/CLAUDE.md. If no format is specified, use a conventional format that clearly describes:
+Use the project's commit message format from AGENTS.md / CLAUDE.md. If no format is specified, use a conventional format that clearly describes:
 - The component affected
 - Whether this is a test addition, a fix, or xfail removal
 - Why the change was needed

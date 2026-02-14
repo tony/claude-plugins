@@ -27,7 +27,7 @@ Run `git log --oneline -10` to see recent commits for style matching.
 
 ## Commit Convention
 
-Read the project's AGENTS.md and/or CLAUDE.md to discover the commit message format. Look for:
+Read the project's AGENTS.md / CLAUDE.md to discover the commit message format. Look for:
 - Subject line format (e.g., `Scope(type[detail]) description`, Conventional Commits `type(scope): description`, or other patterns)
 - Body structure (e.g., `why:/what:` sections)
 - Component naming conventions

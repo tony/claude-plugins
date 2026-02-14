@@ -88,7 +88,7 @@ EOF
 - The `description` must include "Use when..." trigger context
 - Skills **must not** hardcode language-specific tool commands (e.g., `uv run pytest`,
   `npm test`, `cargo test`). Instead, reference "the project's test suite / quality checks
-  as defined in AGENTS.md/CLAUDE.md"
+  as defined in AGENTS.md / CLAUDE.md"
 - Skills **must not** reference agent-specific tool names (e.g., `Read`, `Write`, `Bash`,
   `Task`, `AskUserQuestion`). Use generic descriptions of actions instead.
 

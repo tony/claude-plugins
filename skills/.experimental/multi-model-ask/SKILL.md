@@ -262,7 +262,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 Delegate to a sub-agent (or execute inline if sub-agents are not supported) to answer the question:
 
 **Prompt for the primary model**:
-> Answer the following question about this codebase. Read any relevant files to give a thorough, accurate answer. Read CLAUDE.md/AGENTS.md for project conventions.
+> Answer the following question about this codebase. Read any relevant files to give a thorough, accurate answer. Read AGENTS.md / CLAUDE.md for project conventions.
 >
 > Question: <user's question>
 >
@@ -274,7 +274,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to a
 > <user's question>
 >
 > ---
-> Additional instructions: Read relevant files and AGENTS.md/CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
+> Additional instructions: Read relevant files and AGENTS.md / CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
 
 **Native (`gemini` CLI)**:
 ```bash
@@ -292,7 +292,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to a
 > <user's question>
 >
 > ---
-> Additional instructions: Read relevant files and AGENTS.md/CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
+> Additional instructions: Read relevant files and AGENTS.md / CLAUDE.md for project conventions. Do NOT modify any files. Provide a clear answer citing specific files where relevant.
 
 **Native (`codex` CLI)**:
 ```bash

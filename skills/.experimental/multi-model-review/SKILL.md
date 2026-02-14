@@ -164,7 +164,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to p
 > Review for:
 > 1. **Bugs and logic errors** — incorrect behavior, edge cases, off-by-one errors
 > 2. **Security issues** — injection, XSS, unsafe deserialization, secrets in code
-> 3. **Project convention violations** — check against CLAUDE.md/AGENTS.md
+> 3. **Project convention violations** — check against AGENTS.md / CLAUDE.md
 > 4. **Code quality** — duplication, unclear naming, missing error handling
 > 5. **Test coverage gaps** — new code paths without tests
 >

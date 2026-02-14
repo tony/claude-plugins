@@ -189,7 +189,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 
 The architecture prompt should include:
 
-> Generate project architecture artifacts for this codebase. Read existing AGENTS.md/CLAUDE.md and project structure first.
+> Generate project architecture artifacts for this codebase. Read existing AGENTS.md / CLAUDE.md and project structure first.
 >
 > Goal: <user's architecture goal>
 >

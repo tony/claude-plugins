@@ -304,11 +304,11 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 Delegate to a sub-agent (or execute inline if sub-agents are not supported) to implement in the main working tree:
 
 **Prompt for the primary model**:
-> Implement the following task in this codebase. Read CLAUDE.md/AGENTS.md for project conventions and follow them strictly.
+> Implement the following task in this codebase. Read AGENTS.md / CLAUDE.md for project conventions and follow them strictly.
 >
 > Task: <user's prompt>
 >
-> Follow all project conventions from AGENTS.md/CLAUDE.md. Run the project's quality gates after making changes.
+> Follow all project conventions from AGENTS.md / CLAUDE.md. Run the project's quality gates after making changes.
 
 ### Gemini Implementation (worktree)
 
@@ -316,7 +316,7 @@ Delegate to a sub-agent (or execute inline if sub-agents are not supported) to i
 > <user's prompt>
 >
 > ---
-> Additional instructions: Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
+> Additional instructions: Follow AGENTS.md / CLAUDE.md conventions. Run quality checks after implementation.
 
 **Native (`gemini` CLI)** — run in the worktree directory:
 ```bash
@@ -334,7 +334,7 @@ cd ../$REPO_SLUG-mm-gemini && <timeout_cmd> <timeout_seconds> agent -p -f --mode
 > <user's prompt>
 >
 > ---
-> Additional instructions: Follow AGENTS.md/CLAUDE.md conventions. Run quality checks after implementation.
+> Additional instructions: Follow AGENTS.md / CLAUDE.md conventions. Run quality checks after implementation.
 
 **Native (`codex` CLI)** — run in the worktree directory:
 ```bash
@@ -403,7 +403,7 @@ Copy each file to `$SESSION_DIR/pass-0001/files/<model>/<filepath>` using `mkdir
 
 ### Step 2: Run Quality Gates on Each
 
-For each implementation, run the project's quality gates in its worktree. Discover the specific commands from AGENTS.md/CLAUDE.md. Common gates include:
+For each implementation, run the project's quality gates in its worktree. Discover the specific commands from AGENTS.md / CLAUDE.md. Common gates include:
 
 | Gate | Example commands |
 |------|-----------------|
@@ -419,7 +419,7 @@ Record pass/fail status for each gate and each model. Write the results to `$SES
 For each implementation, assess:
 - **Quality gate results**: Does it pass the project's quality gates?
 - **Correctness**: Does it actually solve the task?
-- **Pattern adherence**: Does it follow project conventions from AGENTS.md/CLAUDE.md?
+- **Pattern adherence**: Does it follow project conventions from AGENTS.md / CLAUDE.md?
 - **Code quality**: Readability, naming, structure
 - **Test coverage**: Did it add/extend tests appropriately?
 - **Scope discipline**: Did it make only the requested changes (no unnecessary refactoring)?

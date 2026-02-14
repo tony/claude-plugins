@@ -73,7 +73,7 @@ Generate well-formatted changelog entries from the current branch's commits and 
 
 ### Commit type mapping
 
-Parse the commit type from the commit subject. Adapt to the project's commit convention (detected from AGENTS.md/CLAUDE.md or from existing commit history):
+Parse the commit type from the commit subject. Adapt to the project's commit convention (detected from AGENTS.md / CLAUDE.md or from existing commit history):
 
 | Commit type | CHANGES section | Notes |
 |---|---|---|

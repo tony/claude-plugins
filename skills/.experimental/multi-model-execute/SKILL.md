@@ -250,7 +250,7 @@ Write the prompt content to `$SESSION_DIR/pass-0001/prompt.md`.
 
 Delegate to a sub-agent (or execute inline if sub-agents are not supported):
 
-> Implement the following task in this codebase. Read CLAUDE.md/AGENTS.md for project conventions and follow them strictly.
+> Implement the following task in this codebase. Read AGENTS.md / CLAUDE.md for project conventions and follow them strictly.
 >
 > Task: <user's task>
 >
@@ -388,7 +388,7 @@ For each file, apply the best model's version from the file snapshots in `$SESSI
 After applying best-of-breed changes:
 1. Read the combined result — verify all pieces fit together
 2. Fix integration issues — imports, function signatures, or API mismatches between files from different models
-3. Ensure consistency — naming conventions, docstring style, import style from AGENTS.md/CLAUDE.md
+3. Ensure consistency — naming conventions, docstring style, import style from AGENTS.md / CLAUDE.md
 
 ### Step 4: Run Quality Gates
 
