@@ -98,6 +98,11 @@ command -v agent >/dev/null 2>&1 && echo "agent:available" || echo "agent:missin
 | **Gemini** | `gemini` binary | `agent --model gemini-3-pro` | `gemini-3-pro` |
 | **GPT** | `codex` binary | `agent --model gpt-5.2` | `gpt-5.2` |
 
+**Resolution logic** for each external slot:
+1. Native CLI found → use it
+2. Else `agent` found → use `agent` with `--model` flag
+3. Else → slot unavailable, note in report
+
 Report which reviewers will participate and which backend each uses.
 
 ### Step 4: Detect Timeout Command
